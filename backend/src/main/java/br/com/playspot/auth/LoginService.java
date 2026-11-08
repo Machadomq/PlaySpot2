@@ -4,7 +4,9 @@ import java.util.Locale;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import br.com.playspot.comum.DadosInvalidosException;
 import br.com.playspot.usuario.CredenciaisInvalidasException;
 import br.com.playspot.usuario.Usuario;
 import br.com.playspot.usuario.UsuarioRepository;
@@ -23,6 +25,15 @@ public class LoginService {
         this.passwordEncoder = passwordEncoder;
         this.tokenService = tokenService;
         this.hashFalso = passwordEncoder.encode("senha-que-ninguem-usa");
+    }
+
+    @Transactional
+    public void trocarSenha(Long usuarioId, TrocarSenhaRequest pedido) {
+        Usuario usuario = usuarios.findById(usuarioId).orElseThrow(CredenciaisInvalidasException::new);
+        if (!passwordEncoder.matches(pedido.senhaAtual(), usuario.getSenhaHash())) {
+            throw new DadosInvalidosException("A senha atual está incorreta.");
+        }
+        usuario.trocarSenha(passwordEncoder.encode(pedido.novaSenha()));
     }
 
     public LoginResponse entrar(LoginRequest pedido) {

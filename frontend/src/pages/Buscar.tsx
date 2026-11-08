@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState } from 'react'
-import type { FormEvent } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import type { CSSProperties, FormEvent } from 'react'
+import { ImageOff, LocateFixed, MapPin, Search } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { api, mensagemDeErro } from '../api/client'
 import type { Esporte, ResultadoBusca } from '../api/tipos'
@@ -7,26 +8,95 @@ import MapaResultados from '../components/MapaResultados'
 import type { PontoDoMapa } from '../components/MapaResultados'
 import { dataMaxima, formatarPreco, hoje } from '../formatos'
 
-interface Coordenadas {
-  latitude: number
-  longitude: number
+/** A busca ordena do mais próximo para o mais distante, então o raio pode ser amplo. */
+const RAIO_KM = '100'
+
+type Origem = { cidade: string } | { latitude: number; longitude: number }
+
+interface Resposta {
+  chave: string
+  lista?: ResultadoBusca[]
+  erro?: string
 }
 
 export default function Buscar() {
   const [esportes, setEsportes] = useState<Esporte[]>([])
   const [esporteId, setEsporteId] = useState('')
   const [data, setData] = useState(hoje)
-  const [dataBuscada, setDataBuscada] = useState(data)
   const [cidade, setCidade] = useState('')
-  const [raioKm, setRaioKm] = useState('30')
-  const [resultados, setResultados] = useState<ResultadoBusca[] | null>(null)
-  const [erro, setErro] = useState<string | null>(null)
-  const [buscando, setBuscando] = useState(false)
-  const [localizando, setLocalizando] = useState(false)
+  const [origem, setOrigem] = useState<Origem | null>(null)
+  const [resposta, setResposta] = useState<Resposta | null>(null)
+  const [localizando, setLocalizando] = useState(() => 'geolocation' in navigator)
+  const [erroLocal, setErroLocal] = useState<string | null>(null)
+  const [destaque, setDestaque] = useState<number | null>(null)
+
+  const pedirPosicao = useCallback((avisarSeFalhar: boolean) => {
+    navigator.geolocation.getCurrentPosition(
+      (posicao) => {
+        setLocalizando(false)
+        setErroLocal(null)
+        setCidade('')
+        // cerca de 100 metros de precisão: basta para a busca e evita enviar a posição exata
+        setOrigem({
+          latitude: Number(posicao.coords.latitude.toFixed(3)),
+          longitude: Number(posicao.coords.longitude.toFixed(3)),
+        })
+      },
+      () => {
+        setLocalizando(false)
+        if (avisarSeFalhar) setErroLocal('Não foi possível obter sua localização. Busque pela cidade.')
+      },
+      { timeout: 10000 },
+    )
+  }, [])
 
   useEffect(() => {
-    api<Esporte[]>('/api/esportes').then(setEsportes).catch((e) => setErro(mensagemDeErro(e)))
-  }, [])
+    api<Esporte[]>('/api/esportes').then(setEsportes).catch(() => setEsportes([]))
+    if ('geolocation' in navigator) pedirPosicao(false)
+  }, [pedirPosicao])
+
+  function usarLocalizacao() {
+    if (!('geolocation' in navigator)) {
+      setErroLocal('Seu navegador não informa a localização. Busque pela cidade.')
+      return
+    }
+    setErroLocal(null)
+    setLocalizando(true)
+    pedirPosicao(true)
+  }
+
+  const parametros = useMemo(() => {
+    if (!origem) return null
+    const busca = new URLSearchParams({ data })
+    if (esporteId) busca.set('esporteId', esporteId)
+    if ('cidade' in origem) {
+      busca.set('cidade', origem.cidade)
+    } else {
+      busca.set('latitude', String(origem.latitude))
+      busca.set('longitude', String(origem.longitude))
+      busca.set('raioKm', RAIO_KM)
+    }
+    return busca.toString()
+  }, [origem, esporteId, data])
+
+  useEffect(() => {
+    if (!parametros) return
+    let ignorar = false
+    api<ResultadoBusca[]>(`/api/busca?${parametros}`)
+      .then((lista) => {
+        if (!ignorar) setResposta({ chave: parametros, lista })
+      })
+      .catch((e) => {
+        if (!ignorar) setResposta({ chave: parametros, erro: mensagemDeErro(e) })
+      })
+    return () => {
+      ignorar = true
+    }
+  }, [parametros])
+
+  const atual = resposta?.chave === parametros ? resposta : null
+  const resultados = atual?.lista
+  const buscando = parametros !== null && atual === null
 
   const pontos = useMemo<PontoDoMapa[]>(
     () =>
@@ -38,64 +108,31 @@ export default function Buscar() {
     [resultados],
   )
 
-  async function buscar(filtros: { cidade?: string; coordenadas?: Coordenadas }) {
-    const parametros = new URLSearchParams({ data })
-    if (esporteId) parametros.set('esporteId', esporteId)
-    if (filtros.cidade) parametros.set('cidade', filtros.cidade)
-    if (filtros.coordenadas) {
-      parametros.set('latitude', String(filtros.coordenadas.latitude))
-      parametros.set('longitude', String(filtros.coordenadas.longitude))
-      parametros.set('raioKm', raioKm)
-    }
-    setErro(null)
-    setBuscando(true)
-    try {
-      setResultados(await api<ResultadoBusca[]>(`/api/busca?${parametros}`))
-      setDataBuscada(data)
-    } catch (e) {
-      setErro(mensagemDeErro(e))
-    } finally {
-      setBuscando(false)
-    }
-  }
-
   function aoEnviar(evento: FormEvent) {
     evento.preventDefault()
-    void buscar({ cidade })
+    setErroLocal(null)
+    setOrigem({ cidade })
   }
 
-  function usarLocalizacao() {
-    if (!navigator.geolocation) {
-      setErro('Seu navegador não informa a localização. Busque pela cidade.')
-      return
-    }
-    setErro(null)
-    setLocalizando(true)
-    navigator.geolocation.getCurrentPosition(
-      (posicao) => {
-        setLocalizando(false)
-        // cerca de 100 metros de precisão: basta para a busca e evita enviar a posição exata
-        void buscar({
-          coordenadas: {
-            latitude: Number(posicao.coords.latitude.toFixed(3)),
-            longitude: Number(posicao.coords.longitude.toFixed(3)),
-          },
-        })
-      },
-      () => {
-        setLocalizando(false)
-        setErro('Não foi possível obter sua localização. Busque pela cidade.')
-      },
-      { timeout: 10000 },
-    )
-  }
+  const erro = erroLocal ?? atual?.erro
+  const titulo = origem && 'cidade' in origem ? `Quadras em ${origem.cidade}` : 'Quadras perto de você'
 
   return (
-    <main className="cartao largo">
-      <h1>Encontre onde jogar</h1>
-      <form onSubmit={aoEnviar}>
-        <div className="linha">
-          <label className="cresce">
+    <main className="pagina">
+      <section className="heroi">
+        <h1>Encontre onde jogar</h1>
+        <form className="busca" onSubmit={aoEnviar}>
+          <label className="busca-cidade">
+            Cidade
+            <input
+              value={cidade}
+              onChange={(e) => setCidade(e.target.value)}
+              maxLength={100}
+              placeholder="Digite sua cidade"
+              required
+            />
+          </label>
+          <label>
             Esporte
             <select value={esporteId} onChange={(e) => setEsporteId(e.target.value)}>
               <option value="">Todos</option>
@@ -106,74 +143,99 @@ export default function Buscar() {
               ))}
             </select>
           </label>
-          <label className="cresce">
+          <label>
             Data
             <input
               type="date"
               value={data}
               min={hoje()}
               max={dataMaxima()}
-              onChange={(e) => setData(e.target.value)}
-              required
+              onChange={(e) => e.target.value && setData(e.target.value)}
             />
           </label>
-        </div>
-        <div className="linha">
-          <label className="cresce">
-            Distância máxima
-            <select value={raioKm} onChange={(e) => setRaioKm(e.target.value)}>
-              <option value="10">10 km</option>
-              <option value="30">30 km</option>
-              <option value="50">50 km</option>
-              <option value="100">100 km</option>
-            </select>
-          </label>
-          <button type="button" className="secundario alinhado" onClick={usarLocalizacao} disabled={localizando || buscando}>
-            {localizando ? 'Localizando…' : 'Perto de mim'}
-          </button>
-        </div>
-        <div className="linha">
-          <label className="cresce">
-            Ou busque pela cidade
-            <input value={cidade} onChange={(e) => setCidade(e.target.value)} maxLength={100} required />
-          </label>
-          <button type="submit" className="alinhado" disabled={buscando}>
-            {buscando ? 'Buscando…' : 'Buscar'}
-          </button>
-        </div>
-        {erro && <p className="erro" role="alert">{erro}</p>}
-      </form>
+          <div className="busca-acoes">
+            <button
+              type="button"
+              className="secundario botao-icone"
+              aria-label="Usar minha localização"
+              title="Usar minha localização"
+              onClick={usarLocalizacao}
+              disabled={localizando}
+            >
+              <LocateFixed aria-hidden="true" />
+            </button>
+            <button type="submit">
+              <Search aria-hidden="true" />
+              Buscar
+            </button>
+          </div>
+        </form>
+      </section>
 
-      {resultados?.length === 0 && <p className="vazio resultado-vazio">Nenhum horário livre encontrado com esses filtros.</p>}
+      {erro && <p className="erro resultado-vazio" role="alert">{erro}</p>}
+
+      {!origem && !localizando && !erro && (
+        <p className="estado-vazio">Digite sua cidade para ver as quadras disponíveis.</p>
+      )}
+      {(localizando || buscando) && !resultados && !erro && (
+        <div className="esqueletos" role="status" aria-label="Procurando quadras">
+          <div className="esqueleto" />
+          <div className="esqueleto" />
+          <div className="esqueleto" />
+        </div>
+      )}
+
+      {resultados?.length === 0 && (
+        <p className="estado-vazio">Nenhum horário livre nesta data. Tente outro dia ou outro esporte.</p>
+      )}
+
       {resultados && resultados.length > 0 && (
-        <>
-          {pontos.length > 0 && <MapaResultados pontos={pontos} data={dataBuscada} />}
-          <ul className="lista">
-            {resultados.map((resultado) => (
-              <li key={resultado.id}>
-                {resultado.fotoId !== null ? (
-                  <img src={`/api/fotos/${resultado.fotoId}`} alt="" />
-                ) : (
-                  <div className="sem-foto" aria-hidden="true" />
-                )}
-                <div className="cresce">
-                  <Link to={`/empresas/${resultado.id}?data=${dataBuscada}`}>{resultado.nome}</Link>
-                  <small>
-                    {resultado.cidade}/{resultado.uf}
-                    {resultado.distanciaKm !== null && ` · ${resultado.distanciaKm.toFixed(1).replace('.', ',')} km`}
-                  </small>
-                  <small>{resultado.esportes.join(', ')}</small>
-                </div>
-                <div className="preco">
-                  <strong>a partir de {formatarPreco(resultado.precoAPartirDe)}</strong>
-                  <small>
-                    {resultado.horariosLivres} {resultado.horariosLivres === 1 ? 'horário livre' : 'horários livres'}
-                  </small>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </>
+        <section className="resultados" aria-label={titulo}>
+          <div>
+            <h2>{titulo}</h2>
+            <ul>
+              {resultados.map((resultado, indice) => (
+                <li
+                  key={resultado.id}
+                  style={{ '--i': Math.min(indice, 8) } as CSSProperties}
+                  onMouseEnter={() => setDestaque(resultado.id)}
+                  onMouseLeave={() => setDestaque(null)}
+                  onFocus={() => setDestaque(resultado.id)}
+                  onBlur={() => setDestaque(null)}
+                >
+                  <Link className="card-local" to={`/empresas/${resultado.id}?data=${data}`}>
+                    {resultado.fotoId !== null ? (
+                      <img src={`/api/fotos/${resultado.fotoId}`} alt="" />
+                    ) : (
+                      <div className="sem-foto" aria-hidden="true">
+                        <ImageOff />
+                      </div>
+                    )}
+                    <div className="card-local-texto">
+                      <h3>{resultado.nome}</h3>
+                      <p>
+                        <MapPin aria-hidden="true" />
+                        {resultado.distanciaKm !== null
+                          ? `${resultado.distanciaKm.toFixed(1).replace('.', ',')} km`
+                          : `${resultado.cidade}/${resultado.uf}`}
+                      </p>
+                      <p>{resultado.esportes.join(' · ')}</p>
+                    </div>
+                    <div className="card-local-preco">
+                      <small>a partir de</small>
+                      <strong>{formatarPreco(resultado.precoAPartirDe)}</strong>
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          {pontos.length > 0 && (
+            <div className="resultados-mapa">
+              <MapaResultados pontos={pontos} data={data} destaque={destaque} />
+            </div>
+          )}
+        </section>
       )}
     </main>
   )

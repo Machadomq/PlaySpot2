@@ -4,6 +4,7 @@ import { Link, Navigate, useLocation } from 'react-router-dom'
 import { ApiError } from '../api/client'
 import type { DadosCadastro } from '../api/tipos'
 import { useAuth } from '../auth/AuthContext'
+import Logo from '../components/Logo'
 
 export default function Cadastro() {
   const { usuario, cadastrar } = useAuth()
@@ -38,12 +39,17 @@ export default function Cadastro() {
   }
 
   return (
+    <div className="auth">
+    <aside className="auth-arte">
+      <Logo />
+      <p>Reserve quadras ou anuncie as suas.</p>
+    </aside>
     <main className="cartao">
       <h1>Criar conta</h1>
       <form onSubmit={aoEnviar}>
-        <fieldset>
+        <fieldset className="papeis">
           <legend>Eu quero…</legend>
-          <label className="opcao">
+          <label className="papel">
             <input
               type="radio"
               name="papel"
@@ -52,7 +58,7 @@ export default function Cadastro() {
             />
             Reservar quadras
           </label>
-          <label className="opcao">
+          <label className="papel">
             <input
               type="radio"
               name="papel"
@@ -113,5 +119,6 @@ export default function Cadastro() {
         Já tem conta? <Link to="/login">Entrar</Link>
       </p>
     </main>
+    </div>
   )
 }

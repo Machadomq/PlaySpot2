@@ -41,6 +41,14 @@ public class HorarioController {
     @GetMapping("/quadras/{id}/horarios")
     public List<HorarioDisponivelResponse> doDia(
             @PathVariable Long id, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data) {
-        return horarioService.doDia(id, data);
+        return horarioService.doDiaPublico(id, data);
+    }
+
+    @GetMapping("/dono/quadras/{id}/grade")
+    public List<HorarioDisponivelResponse> grade(
+            @AuthenticationPrincipal Jwt jwt,
+            @PathVariable Long id,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data) {
+        return horarioService.doDono(Long.valueOf(jwt.getSubject()), id, data);
     }
 }

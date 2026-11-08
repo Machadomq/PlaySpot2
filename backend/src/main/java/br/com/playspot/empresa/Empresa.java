@@ -38,6 +38,9 @@ public class Empresa {
     @Column(nullable = false)
     private String fuso = "America/Sao_Paulo";
 
+    @Column(nullable = false)
+    private boolean aprovada = false;
+
     @Column(precision = 9, scale = 6)
     private BigDecimal latitude;
 
@@ -62,6 +65,18 @@ public class Empresa {
         this.prazoCancelamentoHoras = dados.prazoCancelamentoHoras();
         this.latitude = dados.latitude();
         this.longitude = dados.longitude();
+    }
+
+    public void aprovar() {
+        this.aprovada = true;
+    }
+
+    public void revogarAprovacao() {
+        this.aprovada = false;
+    }
+
+    public boolean isAprovada() {
+        return aprovada;
     }
 
     public BigDecimal getLatitude() {

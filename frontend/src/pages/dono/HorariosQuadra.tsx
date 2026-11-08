@@ -78,7 +78,7 @@ export default function HorariosQuadra() {
   useEffect(() => {
     if (!dataPrevia) return
     let ignorar = false
-    api<HorarioDisponivel[]>(`/api/quadras/${id}/horarios?data=${dataPrevia}`)
+    api<HorarioDisponivel[]>(`/api/dono/quadras/${id}/grade?data=${dataPrevia}`)
       .then((lista) => {
         if (ignorar) return
         setPrevia(lista)

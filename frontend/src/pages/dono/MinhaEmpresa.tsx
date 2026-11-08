@@ -24,6 +24,7 @@ export default function MinhaEmpresa() {
   const [salva, setSalva] = useState(false)
   const [enviando, setEnviando] = useState(false)
   const [localizando, setLocalizando] = useState(false)
+  const [aprovada, setAprovada] = useState<boolean | null>(null)
   const [avisoMapa, setAvisoMapa] = useState<string | null>(null)
   const [centroMapa, setCentroMapa] = useState<{ latitude: number; longitude: number } | null>(null)
 
@@ -32,6 +33,7 @@ export default function MinhaEmpresa() {
     api<Empresa>('/api/dono/empresa')
       .then((empresa) => {
         if (ignorar) return
+        setAprovada(empresa.aprovada)
         setDados({
           ...empresa,
           documento: empresa.documento ?? '',
@@ -97,7 +99,7 @@ export default function MinhaEmpresa() {
     }
     setEnviando(true)
     try {
-      await api<Empresa>('/api/dono/empresa', {
+      const empresa = await api<Empresa>('/api/dono/empresa', {
         method: 'PUT',
         corpo: {
           ...dados,
@@ -105,6 +107,7 @@ export default function MinhaEmpresa() {
           telefone: dados.telefone.trim() || null,
         },
       })
+      setAprovada(empresa.aprovada)
       setSalva(true)
     } catch (e) {
       setErro(mensagemDeErro(e))
@@ -118,6 +121,11 @@ export default function MinhaEmpresa() {
   return (
     <main className="cartao largo">
       <h1>Minha empresa</h1>
+      {aprovada === false && (
+        <p className="aviso" role="status">
+          Aguardando aprovação. Sua empresa ainda não aparece na busca, mas você já pode configurar quadras e horários.
+        </p>
+      )}
       <form onSubmit={aoEnviar}>
         <label>
           Nome

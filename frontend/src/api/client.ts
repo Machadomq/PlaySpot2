@@ -69,5 +69,6 @@ export async function api<T>(caminho: string, { method = 'GET', corpo }: Opcoes 
   if (!resposta.ok) {
     throw new ApiError(resposta.status, await mensagemDoErro(resposta))
   }
+  if (resposta.status === 204) return undefined as T
   return (await resposta.json()) as T
 }

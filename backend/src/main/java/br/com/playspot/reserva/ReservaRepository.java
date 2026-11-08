@@ -23,6 +23,8 @@ public interface ReservaRepository extends JpaRepository<Reserva, Long> {
     List<Reserva> findByQuadraIdInAndInicioGreaterThanEqualAndInicioLessThanOrderByInicioAsc(
             Collection<Long> quadraIds, Instant desde, Instant ate);
 
+    long countByStatusAndInicioGreaterThanEqualAndInicioLessThan(StatusReserva status, Instant desde, Instant ate);
+
     /** Trava a linha até o fim da transação: dois cliques em "pago" ao mesmo tempo são atendidos um de cada vez. */
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select r from Reserva r where r.id = :id")

@@ -76,6 +76,22 @@ public class HorarioService {
                 .toList();
     }
 
+    /** O que o público vê: empresa ainda não aprovada se comporta como inexistente. */
+    @Transactional(readOnly = true)
+    public List<HorarioDisponivelResponse> doDiaPublico(Long quadraId, LocalDate data) {
+        quadras.findById(quadraId)
+                .flatMap(quadra -> empresas.findById(quadra.getEmpresaId()))
+                .filter(Empresa::isAprovada)
+                .orElseThrow(() -> new NaoEncontradoException("Quadra não encontrada."));
+        return doDia(quadraId, data);
+    }
+
+    /** O dono usa a própria grade mesmo antes da aprovação. */
+    @Transactional(readOnly = true)
+    public List<HorarioDisponivelResponse> doDono(Long donoId, Long quadraId, LocalDate data) {
+        return doDia(quadraService.quadraDoDono(donoId, quadraId).getId(), data);
+    }
+
     @Transactional(readOnly = true)
     public List<HorarioDisponivelResponse> doDia(Long quadraId, LocalDate data) {
         Quadra quadra = quadras.findById(quadraId).filter(Quadra::isAtiva)

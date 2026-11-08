@@ -46,7 +46,7 @@ export default function MapaSeletor({ latitude, longitude, centro, aoMudar }: Pr
     if (marcador.current) {
       marcador.current.setLatLng(posicao)
     } else {
-      marcador.current = L.circleMarker(posicao, { radius: 10, color: '#15803d', fillOpacity: 0.8 }).addTo(mapa.current)
+      marcador.current = L.circleMarker(posicao, { radius: 10, color: '#ffffff', weight: 2, fillColor: '#12284c', fillOpacity: 1 }).addTo(mapa.current)
       mapa.current.setView(posicao, 16)
     }
     if (!mapa.current.getBounds().contains(posicao)) mapa.current.setView(posicao, 16)

@@ -86,11 +86,13 @@ export default function EmpresaPublica() {
 
   return (
     <main className="cartao largo">
-      <h1>{empresa.nome}</h1>
-      <p className="vazio">
-        {empresa.endereco}, {empresa.cidade}/{empresa.uf}
-        {empresa.telefone && ` · ${empresa.telefone}`}
-      </p>
+      <header className="capa-local">
+        <h1>{empresa.nome}</h1>
+        <p>
+          {empresa.endereco}, {empresa.cidade}/{empresa.uf}
+          {empresa.telefone && ` · ${empresa.telefone}`}
+        </p>
+      </header>
       <label className="campo-data">
         Data
         <input type="date" value={data} min={hoje()} max={dataMaxima()} onChange={(e) => trocarData(e.target.value)} />
@@ -100,7 +102,7 @@ export default function EmpresaPublica() {
       {empresa.quadras.map((quadra) => (
         <section className="secao-fotos" key={quadra.id}>
           <h2>{quadra.nome}</h2>
-          <p className="vazio">{quadra.esportes.map((e) => e.nome).join(', ')}</p>
+          <p className="vazio">{quadra.esportes.map((e) => e.nome).join(' · ')}</p>
           {quadra.descricao && <p>{quadra.descricao}</p>}
           {quadra.fotoIds.length > 0 && (
             <div className="fotos">

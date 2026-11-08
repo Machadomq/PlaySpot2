@@ -49,6 +49,10 @@ public class Usuario {
         this.papel = papel;
     }
 
+    public void trocarSenha(String novoHash) {
+        this.senhaHash = novoHash;
+    }
+
     public Long getId() {
         return id;
     }

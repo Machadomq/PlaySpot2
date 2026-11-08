@@ -29,6 +29,28 @@ export interface DadosEmpresa {
 
 export interface Empresa extends DadosEmpresa {
   id: number
+  aprovada: boolean
+}
+
+export interface EmpresaAdmin {
+  id: number
+  nome: string
+  cidade: string | null
+  uf: string | null
+  documento: string | null
+  donoNome: string
+  donoEmail: string
+  aprovada: boolean
+}
+
+export interface Metricas {
+  jogadores: number
+  donos: number
+  empresasAprovadas: number
+  empresasPendentes: number
+  reservasConfirmadas: number
+  faltas: number
+  canceladas: number
 }
 
 export interface Esporte {

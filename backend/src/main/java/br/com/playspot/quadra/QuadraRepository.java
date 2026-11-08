@@ -12,4 +12,6 @@ public interface QuadraRepository extends JpaRepository<Quadra, Long> {
     List<Quadra> findByEmpresaIdAndAtivaTrueOrderByNomeAsc(Long empresaId);
 
     Optional<Quadra> findByIdAndEmpresaId(Long id, Long empresaId);
+
+    boolean existsByEsportes_Id(Short esporteId);
 }

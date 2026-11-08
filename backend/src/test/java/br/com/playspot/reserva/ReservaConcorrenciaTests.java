@@ -46,7 +46,8 @@ class ReservaConcorrenciaTests {
         donoId = jdbc.queryForObject(insereUsuario, Long.class, "Dono", "dono-conc@exemplo.com", "DONO");
         jogadorId = jdbc.queryForObject(insereUsuario, Long.class, "Jo", "jo-conc@exemplo.com", "JOGADOR");
         empresaId = jdbc.queryForObject(
-                "insert into empresa(dono_id, nome) values (?, 'Concorrencia') returning id", Long.class, donoId);
+                "insert into empresa(dono_id, nome, aprovada) values (?, 'Concorrencia', true) returning id",
+                Long.class, donoId);
         quadraId = jdbc.queryForObject(
                 "insert into quadra(empresa_id, nome) values (?, 'Q') returning id", Long.class, empresaId);
         jdbc.update("insert into funcionamento(quadra_id, dia_semana, hora_inicio, hora_fim, preco_hora) "

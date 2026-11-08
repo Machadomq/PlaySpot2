@@ -33,6 +33,16 @@ npm run dev
 
 Abra http://localhost:5173. O Vite repassa as chamadas `/api` para o back-end na porta 8080.
 
+## Primeiro administrador
+
+O cadastro nunca cria administradores. Crie uma conta comum e promova pelo banco:
+
+```
+docker exec playspot-db psql -U playspot -d playspot -c "update usuario set papel='ADMIN' where email='seu-email@exemplo.com'"
+```
+
+Depois saia e entre de novo no app.
+
 ## Testes
 
 ```

@@ -14,6 +14,7 @@
 | Cadastro da empresa | Depois do registro do dono, numa tela "Minha empresa". Uma empresa por conta. |
 | Antecedência | O jogador reserva com até 60 dias de antecedência. |
 | Busca | Por cidade ou por proximidade, com mapa OpenStreetMap. |
+| Notificações | Sem serviço de envio por enquanto. Sem e-mail, o administrador gera uma senha temporária para quem perdeu o acesso. |
 | Fotos | Até 5 por quadra no lançamento. Pasta local em desenvolvimento; provedor definido na Fase 7. |
 
 ## Já pronto
@@ -68,7 +69,7 @@
 - Marcar como pago, faltou ou cancelada
 - Resumo financeiro: recebido, a receber e faltas por período
 
-### Fase 5: Conta e avisos
+### Fase 5: Conta e avisos (adiada, depende de um serviço de envio)
 - E-mail de confirmação e de cancelamento da reserva
 - Recuperação de senha
 - Confirmação de e-mail
@@ -108,5 +109,5 @@
 
 | Fase | Pergunta |
 |---|---|
-| 5 | Avisos também por WhatsApp? Têm custo por mensagem. |
+| 5 | Quando retomar: avisos só por e-mail ou também por WhatsApp (custo por mensagem)? |
 | 7 | Qual o orçamento mensal de hospedagem? |
