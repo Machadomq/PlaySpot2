@@ -12,6 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 /** Formato único de erro da API (ProblemDetail): o campo "detail" traz a mensagem para o usuário. */
@@ -32,6 +33,13 @@ public class TratadorDeErros extends ResponseEntityExceptionHandler {
 
         ProblemDetail corpo = ProblemDetail.forStatusAndDetail(status, "Confira os dados informados.");
         corpo.setProperty("campos", campos);
+        return handleExceptionInternal(erro, corpo, headers, status, request);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleMaxUploadSizeExceededException(
+            MaxUploadSizeExceededException erro, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        ProblemDetail corpo = ProblemDetail.forStatusAndDetail(status, "O arquivo pode ter no máximo 5 MB.");
         return handleExceptionInternal(erro, corpo, headers, status, request);
     }
 

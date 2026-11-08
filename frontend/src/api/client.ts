@@ -39,15 +39,20 @@ async function mensagemDoErro(resposta: Response): Promise<string> {
   return 'Algo deu errado. Tente novamente em instantes.'
 }
 
+export function mensagemDeErro(erro: unknown): string {
+  return erro instanceof ApiError ? erro.message : 'Algo deu errado. Tente novamente em instantes.'
+}
+
 interface Opcoes {
-  method?: 'GET' | 'POST'
+  method?: 'GET' | 'POST' | 'PUT' | 'DELETE'
   corpo?: unknown
 }
 
 export async function api<T>(caminho: string, { method = 'GET', corpo }: Opcoes = {}): Promise<T> {
   const token = lerToken()
   const cabecalhos: Record<string, string> = {}
-  if (corpo !== undefined) cabecalhos['Content-Type'] = 'application/json'
+  const ehArquivo = corpo instanceof FormData
+  if (corpo !== undefined && !ehArquivo) cabecalhos['Content-Type'] = 'application/json'
   if (token) cabecalhos['Authorization'] = `Bearer ${token}`
 
   let resposta: Response
@@ -55,7 +60,7 @@ export async function api<T>(caminho: string, { method = 'GET', corpo }: Opcoes 
     resposta = await fetch(caminho, {
       method,
       headers: cabecalhos,
-      body: corpo !== undefined ? JSON.stringify(corpo) : undefined,
+      body: ehArquivo ? corpo : corpo !== undefined ? JSON.stringify(corpo) : undefined,
     })
   } catch {
     throw new ApiError(0, 'Não foi possível falar com o servidor.')
