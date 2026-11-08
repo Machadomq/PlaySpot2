@@ -1,0 +1,45 @@
+# Ambiente de teste no plano gratuito do Render. O banco fica no Neon.
+# As fotos ficam em /tmp e se perdem quando o servidor reinicia ou dorme.
+services:
+  - type: web
+    name: playspot-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    healthCheckPath: /api/esportes
+    envVars:
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ARQUIVOS_DIR
+        value: /tmp/arquivos
+      - key: PGPORT
+        value: "5432"
+      - key: PGSSLMODE
+        value: require
+      - key: PGHOST
+        sync: false
+      - key: PGDATABASE
+        sync: false
+      - key: PGUSER
+        sync: false
+      - key: PGPASSWORD
+        sync: false
+
+  - type: web
+    name: playspot
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+    routes:
+      # Se o Render der outro endereço ao serviço acima, ajuste esta linha
+      - type: rewrite
+        source: /api/*
+        destination: https://playspot-api.onrender.com/api/*
+      - type: rewrite
+        source: /*
+        destination: /index.html
