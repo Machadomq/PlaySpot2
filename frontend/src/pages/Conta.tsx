@@ -7,7 +7,7 @@ const ROTULO_PAPEL = {
 } as const
 
 export default function Conta() {
-  const { usuario, sair } = useAuth()
+  const { usuario } = useAuth()
   if (!usuario) return null
 
   return (
@@ -19,9 +19,6 @@ export default function Conta() {
         <dt>Perfil</dt>
         <dd>{ROTULO_PAPEL[usuario.papel]}</dd>
       </dl>
-      <button type="button" className="secundario" onClick={sair}>
-        Sair
-      </button>
     </main>
   )
 }

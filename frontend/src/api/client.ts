@@ -27,17 +27,16 @@ export class ApiError extends Error {
   }
 }
 
-function mensagemPorStatus(status: number): string {
-  switch (status) {
-    case 400:
-      return 'Confira os dados informados.'
-    case 401:
-      return 'E-mail ou senha inválidos.'
-    case 409:
-      return 'Este e-mail já está cadastrado.'
-    default:
-      return 'Algo deu errado. Tente novamente em instantes.'
+/** Lê o erro no formato da API; "campos" traz o problema de cada campo do formulário. */
+async function mensagemDoErro(resposta: Response): Promise<string> {
+  try {
+    const corpo = (await resposta.json()) as { detail?: string; campos?: Record<string, string> }
+    if (corpo.campos) return Object.values(corpo.campos).join(' ')
+    if (corpo.detail) return corpo.detail
+  } catch {
+    // resposta sem JSON: usa a mensagem genérica abaixo
   }
+  return 'Algo deu errado. Tente novamente em instantes.'
 }
 
 interface Opcoes {
@@ -63,7 +62,7 @@ export async function api<T>(caminho: string, { method = 'GET', corpo }: Opcoes 
   }
 
   if (!resposta.ok) {
-    throw new ApiError(resposta.status, mensagemPorStatus(resposta.status))
+    throw new ApiError(resposta.status, await mensagemDoErro(resposta))
   }
   return (await resposta.json()) as T
 }

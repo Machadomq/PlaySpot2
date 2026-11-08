@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import type { ReactNode } from 'react'
 import { useAuth } from './auth/AuthContext'
+import Layout from './components/Layout'
 import Cadastro from './pages/Cadastro'
 import Conta from './pages/Conta'
 import Login from './pages/Login'
@@ -16,17 +17,19 @@ function Protegida({ children }: { children: ReactNode }) {
 export default function App() {
   return (
     <Routes>
-      <Route
-        path="/"
-        element={
-          <Protegida>
-            <Conta />
-          </Protegida>
-        }
-      />
-      <Route path="/login" element={<Login />} />
-      <Route path="/cadastro" element={<Cadastro />} />
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route element={<Layout />}>
+        <Route
+          path="/"
+          element={
+            <Protegida>
+              <Conta />
+            </Protegida>
+          }
+        />
+        <Route path="/login" element={<Login />} />
+        <Route path="/cadastro" element={<Cadastro />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Route>
     </Routes>
   )
 }

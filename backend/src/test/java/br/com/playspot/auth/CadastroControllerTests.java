@@ -56,7 +56,8 @@ class CadastroControllerTests {
                 .andExpect(status().isCreated());
 
         mockMvc.perform(post("/api/auth/cadastro").contentType(MediaType.APPLICATION_JSON).content(corpo))
-                .andExpect(status().isConflict());
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.detail").value("Este e-mail já está cadastrado."));
     }
 
     @Test
@@ -64,7 +65,9 @@ class CadastroControllerTests {
         mockMvc.perform(post("/api/auth/cadastro")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json("curta@exemplo.com", "123", "JOGADOR")))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.detail").value("Confira os dados informados."))
+                .andExpect(jsonPath("$.campos.senha").value("A senha deve ter entre 8 e 72 caracteres."));
     }
 
     @Test
