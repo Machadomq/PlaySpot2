@@ -1,10 +1,13 @@
 import { useEffect, useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
+import { LocateFixed, MapPin, Search } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { api, mensagemDeErro } from '../api/client'
 import type { Esporte, ResultadoBusca } from '../api/tipos'
+import CenaQuadra from '../components/CenaQuadra'
 import MapaResultados from '../components/MapaResultados'
 import type { PontoDoMapa } from '../components/MapaResultados'
+import { iconeDoEsporte } from '../esportes'
 import { dataMaxima, formatarPreco, hoje } from '../formatos'
 
 interface Coordenadas {
@@ -91,23 +94,37 @@ export default function Buscar() {
   }
 
   return (
-    <main className="cartao largo">
-      <h1>Encontre onde jogar</h1>
-      <form onSubmit={aoEnviar}>
-        <div className="linha">
-          <label className="cresce">
-            Esporte
-            <select value={esporteId} onChange={(e) => setEsporteId(e.target.value)}>
-              <option value="">Todos</option>
-              {esportes.map((esporte) => (
-                <option key={esporte.id} value={esporte.id}>
-                  {esporte.nome}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="cresce">
-            Data
+    <main className="pagina">
+      <section className="heroi">
+        <CenaQuadra />
+        <h1>
+          Bora <em>jogar?</em>
+        </h1>
+        <p>Encontre uma quadra perto de você, compare os preços e reserve em poucos toques.</p>
+      </section>
+
+      <form className="busca" onSubmit={aoEnviar}>
+        <fieldset className="chips">
+          <legend>Qual esporte?</legend>
+          <button type="button" className="chip" aria-pressed={esporteId === ''} onClick={() => setEsporteId('')}>
+            <span aria-hidden="true">🙌</span> Todos
+          </button>
+          {esportes.map((esporte) => (
+            <button
+              key={esporte.id}
+              type="button"
+              className="chip"
+              aria-pressed={esporteId === String(esporte.id)}
+              onClick={() => setEsporteId(String(esporte.id))}
+            >
+              <span aria-hidden="true">{iconeDoEsporte(esporte.nome)}</span> {esporte.nome}
+            </button>
+          ))}
+        </fieldset>
+
+        <div className="busca-campos">
+          <label>
+            Quando?
             <input
               type="date"
               value={data}
@@ -117,10 +134,8 @@ export default function Buscar() {
               required
             />
           </label>
-        </div>
-        <div className="linha">
-          <label className="cresce">
-            Distância máxima
+          <label>
+            Até que distância?
             <select value={raioKm} onChange={(e) => setRaioKm(e.target.value)}>
               <option value="10">10 km</option>
               <option value="30">30 km</option>
@@ -128,52 +143,85 @@ export default function Buscar() {
               <option value="100">100 km</option>
             </select>
           </label>
-          <button type="button" className="secundario alinhado" onClick={usarLocalizacao} disabled={localizando || buscando}>
-            {localizando ? 'Localizando…' : 'Perto de mim'}
-          </button>
         </div>
-        <div className="linha">
-          <label className="cresce">
-            Ou busque pela cidade
-            <input value={cidade} onChange={(e) => setCidade(e.target.value)} maxLength={100} required />
+
+        <button type="button" className="destaque" onClick={usarLocalizacao} disabled={localizando || buscando}>
+          <LocateFixed aria-hidden="true" />
+          {localizando ? 'Localizando…' : 'Quadras perto de mim'}
+        </button>
+
+        <div className="ou"><span>ou</span></div>
+
+        <div className="busca-cidade">
+          <label>
+            Busque pela cidade
+            <input
+              value={cidade}
+              onChange={(e) => setCidade(e.target.value)}
+              maxLength={100}
+              placeholder="Ex.: Jaraguá do Sul"
+              required
+            />
           </label>
-          <button type="submit" className="alinhado" disabled={buscando}>
+          <button type="submit" disabled={buscando}>
+            <Search aria-hidden="true" />
             {buscando ? 'Buscando…' : 'Buscar'}
           </button>
         </div>
         {erro && <p className="erro" role="alert">{erro}</p>}
       </form>
 
-      {resultados?.length === 0 && <p className="vazio resultado-vazio">Nenhum horário livre encontrado com esses filtros.</p>}
+      {resultados === null && (
+        <ol className="passos">
+          <li><strong>Escolha</strong> o esporte e o dia.</li>
+          <li><strong>Compare</strong> locais, preços e horários livres.</li>
+          <li><strong>Reserve</strong> na hora e pague no local.</li>
+        </ol>
+      )}
+
+      {resultados?.length === 0 && (
+        <p className="estado-vazio"><span aria-hidden="true">🥅</span> Nenhum horário livre com esses filtros. Tente outro dia ou aumente a distância.</p>
+      )}
+
       {resultados && resultados.length > 0 && (
-        <>
-          {pontos.length > 0 && <MapaResultados pontos={pontos} data={dataBuscada} />}
-          <ul className="lista">
+        <section className="resultados" aria-label="Resultados da busca">
+          <ul>
             {resultados.map((resultado) => (
               <li key={resultado.id}>
-                {resultado.fotoId !== null ? (
-                  <img src={`/api/fotos/${resultado.fotoId}`} alt="" />
-                ) : (
-                  <div className="sem-foto" aria-hidden="true" />
-                )}
-                <div className="cresce">
-                  <Link to={`/empresas/${resultado.id}?data=${dataBuscada}`}>{resultado.nome}</Link>
-                  <small>
-                    {resultado.cidade}/{resultado.uf}
-                    {resultado.distanciaKm !== null && ` · ${resultado.distanciaKm.toFixed(1).replace('.', ',')} km`}
-                  </small>
-                  <small>{resultado.esportes.join(', ')}</small>
-                </div>
-                <div className="preco">
-                  <strong>a partir de {formatarPreco(resultado.precoAPartirDe)}</strong>
-                  <small>
-                    {resultado.horariosLivres} {resultado.horariosLivres === 1 ? 'horário livre' : 'horários livres'}
-                  </small>
-                </div>
+                <Link className="card-local" to={`/empresas/${resultado.id}?data=${dataBuscada}`}>
+                  {resultado.fotoId !== null ? (
+                    <img src={`/api/fotos/${resultado.fotoId}`} alt="" />
+                  ) : (
+                    <div className="sem-foto" aria-hidden="true" />
+                  )}
+                  <div className="card-local-texto">
+                    <h2>{resultado.nome}</h2>
+                    <p>
+                      <MapPin aria-hidden="true" />
+                      {resultado.cidade}/{resultado.uf}
+                      {resultado.distanciaKm !== null && ` · ${resultado.distanciaKm.toFixed(1).replace('.', ',')} km`}
+                    </p>
+                    <p className="card-esportes">
+                      {resultado.esportes.map((e) => `${iconeDoEsporte(e)} ${e}`).join('  ')}
+                    </p>
+                  </div>
+                  <div className="card-local-preco">
+                    <small>a partir de</small>
+                    <strong>{formatarPreco(resultado.precoAPartirDe)}</strong>
+                    <span className="selo-livres">
+                      {resultado.horariosLivres} {resultado.horariosLivres === 1 ? 'horário' : 'horários'}
+                    </span>
+                  </div>
+                </Link>
               </li>
             ))}
           </ul>
-        </>
+          {pontos.length > 0 && (
+            <div className="resultados-mapa">
+              <MapaResultados pontos={pontos} data={dataBuscada} />
+            </div>
+          )}
+        </section>
       )}
     </main>
   )

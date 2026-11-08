@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { api, mensagemDeErro } from '../api/client'
 import type { Reserva, StatusReserva } from '../api/tipos'
-import { formatarDataHora, formatarPreco } from '../formatos'
+import { formatarDataHora, formatarPreco, partesDoHorario } from '../formatos'
 
 const ROTULO_STATUS: Record<StatusReserva, string> = {
   PENDENTE: 'Pendente',
@@ -11,6 +11,17 @@ const ROTULO_STATUS: Record<StatusReserva, string> = {
   CONCLUIDA: 'Concluída',
   FALTOU: 'Falta registrada',
   BLOQUEADA: 'Bloqueada',
+}
+
+function Canhoto({ reserva }: { reserva: Reserva }) {
+  const { dia, mes, hora } = partesDoHorario(reserva.inicio, reserva.fuso)
+  return (
+    <div className="canhoto">
+      <strong>{dia}</strong>
+      <span>{mes}</span>
+      <small>{hora}</small>
+    </div>
+  )
 }
 
 export default function MinhasReservas() {
@@ -53,14 +64,14 @@ export default function MinhasReservas() {
         </p>
       )}
       {reservas && reservas.length > 0 && (
-        <ul className="lista">
+        <ul className="bilhetes">
           {reservas.map((reserva) => (
-            <li key={reserva.id}>
-              <div className="cresce">
+            <li key={reserva.id} data-status={reserva.status}>
+              <Canhoto reserva={reserva} />
+              <div className="cresce bilhete-texto">
                 <Link to={`/empresas/${reserva.empresaId}`}>{reserva.empresaNome}</Link>
                 <small>
-                  {reserva.quadraNome} · {formatarDataHora(reserva.inicio, reserva.fuso)} ·{' '}
-                  {formatarPreco(reserva.precoTotal)}
+                  {reserva.quadraNome} · {formatarPreco(reserva.precoTotal)}
                 </small>
                 <small>{reserva.endereco}</small>
                 {reserva.podeCancelar && (

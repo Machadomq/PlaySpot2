@@ -36,7 +36,19 @@ export function dataMaxima() {
   return paraDataIso(data)
 }
 
-export const formatarDataHora = (instante: string, fuso: string) =>
+/** Dia, mês e hora separados, para compor o canhoto do bilhete de reserva. */
+export function partesDoHorario(instante: string, fuso: string) {
+  const data = new Date(instante)
+  const parte = (opcoes: Intl.DateTimeFormatOptions) =>
+    new Intl.DateTimeFormat('pt-BR', { ...opcoes, timeZone: fuso }).format(data)
+  return {
+    dia: parte({ day: '2-digit' }),
+    mes: parte({ month: 'short' }).replace('.', ''),
+    hora: parte({ hour: '2-digit', minute: '2-digit' }),
+  }
+}
+
+export const formatarDataHora =(instante: string, fuso: string) =>
   new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'short', timeZone: fuso }).format(
     new Date(instante),
   )

@@ -46,7 +46,7 @@ export default function AcoesDaReserva({ item, aoMudar }: Props) {
   }
 
   return (
-    <div className="item-agenda">
+    <div className="item-agenda" data-status={item.status} data-pago={item.metodoPago ? 'sim' : undefined}>
       <div className="item-info">
         {bloqueio ? (
           <strong>Bloqueado: {item.cliente}</strong>
