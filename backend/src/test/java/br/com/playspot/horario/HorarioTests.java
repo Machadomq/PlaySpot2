@@ -33,7 +33,7 @@ import br.com.playspot.usuario.UsuarioRepository;
 class HorarioTests {
 
     private static final String EMPRESA = """
-            {"nome":"Arena","endereco":"Rua","cidade":"Blumenau","uf":"SC","prazoCancelamentoHoras":24}
+            {"nome":"Arena","endereco":"Rua","cidade":"Blumenau","uf":"SC","prazoCancelamentoHoras":24,"latitude":-26.9,"longitude":-49.06}
             """;
 
     @Autowired

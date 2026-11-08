@@ -26,6 +26,8 @@ import br.com.playspot.reserva.StatusReserva;
 @Service
 public class HorarioService {
 
+    public static final int ANTECEDENCIA_MAXIMA_DIAS = 60;
+
     private static final List<String> NOMES_DOS_DIAS =
             List.of("domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado");
 
@@ -102,6 +104,7 @@ public class HorarioService {
                 instante(data, slots.getFirst().inicio(), fuso));
 
         Instant agora = Instant.now();
+        boolean dentroDaAntecedencia = !data.isAfter(LocalDate.now(fuso).plusDays(ANTECEDENCIA_MAXIMA_DIAS));
         return slots.stream().map(slot -> {
             Instant inicio = instante(data, slot.inicio(), fuso);
             Instant fim = instante(data, slot.fim(), fuso);
@@ -113,7 +116,7 @@ public class HorarioService {
                     horaDoDia(slot.inicio()),
                     horaDoDia(slot.fim()),
                     slot.preco(),
-                    !ocupado && inicio.isAfter(agora));
+                    !ocupado && inicio.isAfter(agora) && dentroDaAntecedencia);
         }).toList();
     }
 

@@ -52,6 +52,11 @@ public class QuadraService {
                 .orElse(List.of());
     }
 
+    @Transactional(readOnly = true)
+    public List<QuadraResponse> ativasDaEmpresa(Long empresaId) {
+        return respostas(quadras.findByEmpresaIdAndAtivaTrueOrderByNomeAsc(empresaId));
+    }
+
     @Transactional
     public QuadraResponse criar(Long donoId, QuadraRequest dados) {
         Empresa empresa = empresas.findByDonoId(donoId)

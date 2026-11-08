@@ -38,7 +38,7 @@ import br.com.playspot.usuario.UsuarioRepository;
 class EmpresaEQuadraTests {
 
     private static final String EMPRESA = """
-            {"nome":"Arena Azul","endereco":"Rua A, 10","cidade":"Blumenau","uf":"SC","prazoCancelamentoHoras":24}
+            {"nome":"Arena Azul","endereco":"Rua A, 10","cidade":"Blumenau","uf":"SC","prazoCancelamentoHoras":24,"latitude":-26.9,"longitude":-49.06}
             """;
     private static final byte[] PNG = {(byte) 0x89, 'P', 'N', 'G', '\r', '\n', 0x1A, '\n', 0, 0, 0, 0};
 

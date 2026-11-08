@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import { Link, Navigate } from 'react-router-dom'
+import { Link, Navigate, useLocation } from 'react-router-dom'
 import { ApiError } from '../api/client'
 import type { DadosCadastro } from '../api/tipos'
 import { useAuth } from '../auth/AuthContext'
 
 export default function Cadastro() {
   const { usuario, cadastrar } = useAuth()
+  const destino = (useLocation().state as { de?: string } | null)?.de ?? '/'
   const [nome, setNome] = useState('')
   const [email, setEmail] = useState('')
   const [telefone, setTelefone] = useState('')
@@ -15,7 +16,7 @@ export default function Cadastro() {
   const [erro, setErro] = useState<string | null>(null)
   const [enviando, setEnviando] = useState(false)
 
-  if (usuario) return <Navigate to="/" replace />
+  if (usuario) return <Navigate to={destino} replace />
 
   async function aoEnviar(evento: FormEvent) {
     evento.preventDefault()

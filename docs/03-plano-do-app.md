@@ -12,6 +12,8 @@
 | Confirmação da reserva | Automática, se o horário estiver livre. |
 | Cancelamento | Cada empresa define a antecedência mínima. Depois do prazo, o jogador fala com o local. |
 | Cadastro da empresa | Depois do registro do dono, numa tela "Minha empresa". Uma empresa por conta. |
+| Antecedência | O jogador reserva com até 60 dias de antecedência. |
+| Busca | Por cidade ou por proximidade, com mapa OpenStreetMap. |
 | Fotos | Até 5 por quadra no lançamento. Pasta local em desenvolvimento; provedor definido na Fase 7. |
 
 ## Já pronto
@@ -79,6 +81,8 @@
 ### Fase 7: Produção
 - Hospedagem, domínio e HTTPS
 - Provedor de armazenamento das fotos
+- Provedor de mapas e de busca de endereço com volume compatível (os servidores públicos do OpenStreetMap têm limite de uso)
+- Busca feita no banco, em vez de carregar todas as empresas na memória
 - Segredos fora do código (`JWT_SECRET` e banco)
 - Revisão do armazenamento do token (cookie `HttpOnly`)
 - Limite de tentativas de login
@@ -104,7 +108,5 @@
 
 | Fase | Pergunta |
 |---|---|
-| 3 | Com quanta antecedência o jogador pode reservar? |
-| 3 | A busca usa só cidade ou também distância pelo mapa? |
 | 5 | Avisos também por WhatsApp? Têm custo por mensagem. |
 | 7 | Qual o orçamento mensal de hospedagem? |

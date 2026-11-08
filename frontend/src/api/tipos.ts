@@ -23,6 +23,8 @@ export interface DadosEmpresa {
   cidade: string
   uf: string
   prazoCancelamentoHoras: number
+  latitude: number | null
+  longitude: number | null
 }
 
 export interface Empresa extends DadosEmpresa {
@@ -66,6 +68,52 @@ export interface HorarioDisponivel {
   horaFim: string
   preco: number
   livre: boolean
+}
+
+export interface ResultadoBusca {
+  id: number
+  nome: string
+  endereco: string
+  cidade: string
+  uf: string
+  latitude: number | null
+  longitude: number | null
+  distanciaKm: number | null
+  esportes: string[]
+  fotoId: number | null
+  horariosLivres: number
+  precoAPartirDe: number
+}
+
+export interface EmpresaPublica {
+  id: number
+  nome: string
+  telefone: string | null
+  endereco: string
+  cidade: string
+  uf: string
+  latitude: number | null
+  longitude: number | null
+  prazoCancelamentoHoras: number
+  quadras: Quadra[]
+}
+
+export type StatusReserva = 'PENDENTE' | 'CONFIRMADA' | 'CANCELADA' | 'CONCLUIDA' | 'FALTOU'
+
+export interface Reserva {
+  id: number
+  empresaId: number
+  empresaNome: string
+  endereco: string
+  telefone: string | null
+  quadraNome: string
+  inicio: string
+  fim: string
+  fuso: string
+  precoTotal: number
+  status: StatusReserva
+  canceladaAte: string
+  podeCancelar: boolean
 }
 
 export interface DadosCadastro {

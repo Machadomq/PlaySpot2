@@ -3,6 +3,7 @@ import type { FormEvent } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { api, mensagemDeErro } from '../../api/client'
 import type { FaixaHorario, HorarioDisponivel, Quadra } from '../../api/tipos'
+import { formatarPreco, hoje } from '../../formatos'
 
 const DIAS = [
   { numero: 1, nome: 'Segunda' },
@@ -32,9 +33,6 @@ function novaChave() {
 
 const semanaVazia = (): Semana => Array.from({ length: 7 }, () => [])
 
-const formatarPreco = (valor: number) =>
-  valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
-
 export default function HorariosQuadra() {
   const { id } = useParams()
   const [nomeQuadra, setNomeQuadra] = useState<string | null>(null)
@@ -44,7 +42,7 @@ export default function HorariosQuadra() {
   const [salva, setSalva] = useState(false)
   const [enviando, setEnviando] = useState(false)
 
-  const [dataPrevia, setDataPrevia] = useState(() => new Date().toLocaleDateString('en-CA'))
+  const [dataPrevia, setDataPrevia] = useState(hoje)
   const [previa, setPrevia] = useState<HorarioDisponivel[] | null>(null)
   const [erroPrevia, setErroPrevia] = useState<string | null>(null)
   const [versaoSalva, setVersaoSalva] = useState(0)

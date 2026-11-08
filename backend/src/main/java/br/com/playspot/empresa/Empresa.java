@@ -1,5 +1,7 @@
 package br.com.playspot.empresa;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -36,6 +38,12 @@ public class Empresa {
     @Column(nullable = false)
     private String fuso = "America/Sao_Paulo";
 
+    @Column(precision = 9, scale = 6)
+    private BigDecimal latitude;
+
+    @Column(precision = 9, scale = 6)
+    private BigDecimal longitude;
+
     protected Empresa() {
         // exigido pelo JPA
     }
@@ -52,6 +60,16 @@ public class Empresa {
         this.cidade = dados.cidade().trim();
         this.uf = dados.uf();
         this.prazoCancelamentoHoras = dados.prazoCancelamentoHoras();
+        this.latitude = dados.latitude();
+        this.longitude = dados.longitude();
+    }
+
+    public BigDecimal getLatitude() {
+        return latitude;
+    }
+
+    public BigDecimal getLongitude() {
+        return longitude;
     }
 
     public Long getId() {

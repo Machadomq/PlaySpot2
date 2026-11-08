@@ -1,5 +1,7 @@
 package br.com.playspot.empresa;
 
+import java.math.BigDecimal;
+
 public record EmpresaResponse(
         Long id,
         String nome,
@@ -8,7 +10,9 @@ public record EmpresaResponse(
         String endereco,
         String cidade,
         String uf,
-        int prazoCancelamentoHoras) {
+        int prazoCancelamentoHoras,
+        BigDecimal latitude,
+        BigDecimal longitude) {
 
     public static EmpresaResponse de(Empresa empresa) {
         return new EmpresaResponse(
@@ -19,6 +23,8 @@ public record EmpresaResponse(
                 empresa.getEndereco(),
                 empresa.getCidade(),
                 empresa.getUf(),
-                empresa.getPrazoCancelamentoHoras());
+                empresa.getPrazoCancelamentoHoras(),
+                empresa.getLatitude(),
+                empresa.getLongitude());
     }
 }
