@@ -9,5 +9,9 @@ public interface EmpresaRepository extends JpaRepository<Empresa, Long> {
 
     Optional<Empresa> findByDonoId(Long donoId);
 
-    List<Empresa> findByAtivaTrueOrderByNomeAsc();
+    List<Empresa> findByAtivaTrueAndAprovadaTrueOrderByNomeAsc();
+
+    List<Empresa> findAllByOrderByAprovadaAscNomeAsc();
+
+    long countByAprovada(boolean aprovada);
 }

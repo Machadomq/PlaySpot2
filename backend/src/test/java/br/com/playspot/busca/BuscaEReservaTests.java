@@ -64,6 +64,9 @@ class BuscaEReservaTests {
                                 {"nome":"Q1","duracaoSlotMin":60,"ativa":true,"esporteIds":[%d]}
                                 """.formatted(esporteId)))
                 .andReturn().getResponse().getContentAsString());
+        mockMvc.perform(post("/api/admin/empresas/" + empresaId + "/aprovacao")
+                        .with(jwt().authorities(new SimpleGrantedAuthority("ROLE_ADMIN"))))
+                .andExpect(status().isOk());
         abre(data);
     }
 

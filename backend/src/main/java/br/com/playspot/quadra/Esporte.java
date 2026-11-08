@@ -22,6 +22,14 @@ public class Esporte {
         // exigido pelo JPA
     }
 
+    public Esporte(String nome) {
+        this.nome = nome;
+    }
+
+    public void renomear(String nome) {
+        this.nome = nome;
+    }
+
     public Short getId() {
         return id;
     }

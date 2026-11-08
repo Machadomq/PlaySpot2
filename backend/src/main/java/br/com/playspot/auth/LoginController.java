@@ -4,7 +4,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 
@@ -27,6 +29,12 @@ public class LoginController {
     @PostMapping("/auth/login")
     public LoginResponse entrar(@Valid @RequestBody LoginRequest pedido) {
         return loginService.entrar(pedido);
+    }
+
+    @PostMapping("/me/senha")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void trocarSenha(@AuthenticationPrincipal Jwt jwt, @Valid @RequestBody TrocarSenhaRequest pedido) {
+        loginService.trocarSenha(Long.valueOf(jwt.getSubject()), pedido);
     }
 
     /** Devolve o usuário dono do token enviado; serve para o front saber "quem sou eu". */

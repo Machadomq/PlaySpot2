@@ -13,6 +13,7 @@ export default function Layout() {
         <nav>
           {usuario?.papel !== 'DONO' && <NavLink to="/buscar">Buscar</NavLink>}
           {usuario?.papel === 'JOGADOR' && <NavLink to="/reservas">Reservas</NavLink>}
+          {usuario?.papel === 'ADMIN' && <NavLink to="/admin">Administração</NavLink>}
           {usuario?.papel === 'DONO' && (
             <>
               <NavLink to="/dono/agenda">Agenda</NavLink>

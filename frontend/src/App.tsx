@@ -9,6 +9,7 @@ import Conta from './pages/Conta'
 import EmpresaPublica from './pages/EmpresaPublica'
 import Login from './pages/Login'
 import MinhasReservas from './pages/MinhasReservas'
+import Painel from './pages/admin/Painel'
 import Agenda from './pages/dono/Agenda'
 import Financeiro from './pages/dono/Financeiro'
 import HorariosQuadra from './pages/dono/HorariosQuadra'
@@ -32,7 +33,8 @@ function RotaDono({ children }: { children: ReactNode }) {
 function Inicio() {
   const { usuario, carregando } = useAuth()
   if (carregando) return <p className="carregando">Carregando…</p>
-  return <Navigate to={usuario?.papel === 'DONO' ? '/dono/agenda' : '/buscar'} replace />
+  const destino = usuario?.papel === 'DONO' ? '/dono/agenda' : usuario?.papel === 'ADMIN' ? '/admin' : '/buscar'
+  return <Navigate to={destino} replace />
 }
 
 export default function App() {
@@ -44,6 +46,7 @@ export default function App() {
         <Route path="/empresas/:id" element={<EmpresaPublica />} />
         <Route path="/conta" element={<Protegida><Conta /></Protegida>} />
         <Route path="/reservas" element={<Protegida papel="JOGADOR"><MinhasReservas /></Protegida>} />
+        <Route path="/admin" element={<Protegida papel="ADMIN"><Painel /></Protegida>} />
         <Route path="/dono/agenda" element={<RotaDono><Agenda /></RotaDono>} />
         <Route path="/dono/financeiro" element={<RotaDono><Financeiro /></RotaDono>} />
         <Route path="/dono/empresa" element={<RotaDono><MinhaEmpresa /></RotaDono>} />

@@ -32,6 +32,7 @@ public class SecurityConfig {
                         .requestMatchers("/error").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/esportes", "/api/fotos/*", "/api/quadras/*/horarios",
                                 "/api/busca", "/api/empresas/*").permitAll()
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/dono/**").hasRole("DONO")
                         .requestMatchers("/api/reservas/**").hasRole("JOGADOR")
                         .anyRequest().authenticated())

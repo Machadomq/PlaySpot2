@@ -12,7 +12,8 @@ public record EmpresaResponse(
         String uf,
         int prazoCancelamentoHoras,
         BigDecimal latitude,
-        BigDecimal longitude) {
+        BigDecimal longitude,
+        boolean aprovada) {
 
     public static EmpresaResponse de(Empresa empresa) {
         return new EmpresaResponse(
@@ -25,6 +26,7 @@ public record EmpresaResponse(
                 empresa.getUf(),
                 empresa.getPrazoCancelamentoHoras(),
                 empresa.getLatitude(),
-                empresa.getLongitude());
+                empresa.getLongitude(),
+                empresa.isAprovada());
     }
 }

@@ -38,7 +38,7 @@ export default function Agenda() {
       ])
       const ativas = listaQuadras.filter((q) => q.ativa)
       const listas = await Promise.all(
-        ativas.map((q) => api<HorarioDisponivel[]>(`/api/quadras/${q.id}/horarios?data=${inicioPeriodo}`)),
+        ativas.map((q) => api<HorarioDisponivel[]>(`/api/dono/quadras/${q.id}/grade?data=${inicioPeriodo}`)),
       )
       setQuadras(ativas)
       setItens(listaItens)

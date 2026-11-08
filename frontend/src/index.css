@@ -649,6 +649,35 @@ button.link:hover:not(:disabled) {
   gap: 10px;
 }
 
+.aviso {
+  margin: 0 0 16px;
+  padding: 10px 12px;
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  background: var(--fundo);
+  font-size: 0.9rem;
+}
+
+.aviso code {
+  font-size: 1rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+button.compacto {
+  padding: 5px 10px;
+  font-size: 0.85rem;
+}
+
+.lista small,
+.lista strong {
+  display: block;
+}
+
+.secao-fotos form.linha {
+  margin-bottom: 12px;
+}
+
 .carregando {
   text-align: center;
   color: var(--texto-suave);

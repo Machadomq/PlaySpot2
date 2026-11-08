@@ -59,7 +59,7 @@ public class ReservaService {
                 .orElseThrow(() -> new NaoEncontradoException("Quadra não encontrada."));
 
         LocalDate data = pedido.inicio().atZone(ZoneId.of(empresa.getFuso())).toLocalDate();
-        HorarioDisponivelResponse horario = horarioService.doDia(quadra.getId(), data).stream()
+        HorarioDisponivelResponse horario = horarioService.doDiaPublico(quadra.getId(), data).stream()
                 .filter(h -> h.inicio().equals(pedido.inicio()) && h.livre())
                 .findFirst()
                 .orElseThrow(() -> new RegraDeNegocioException(HORARIO_INDISPONIVEL));

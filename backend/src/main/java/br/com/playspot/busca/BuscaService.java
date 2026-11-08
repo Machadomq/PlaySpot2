@@ -62,7 +62,7 @@ public class BuscaService {
             throw new DadosInvalidosException("Informe uma cidade ou use sua localização.");
         }
 
-        List<Candidata> candidatas = empresas.findByAtivaTrueOrderByNomeAsc().stream()
+        List<Candidata> candidatas = empresas.findByAtivaTrueAndAprovadaTrueOrderByNomeAsc().stream()
                 .filter(e -> !filtros.temCidade() || normalizar(e.getCidade()).equals(normalizar(filtros.cidade())))
                 .filter(e -> !filtros.temCoordenadas() || e.getLatitude() != null)
                 .map(e -> new Candidata(e, filtros.temCoordenadas() ? distanciaKm(e, filtros) : null))
@@ -82,7 +82,7 @@ public class BuscaService {
 
     @Transactional(readOnly = true)
     public EmpresaPublicaResponse empresa(Long id) {
-        Empresa empresa = empresas.findById(id).filter(Empresa::isAtiva)
+        Empresa empresa = empresas.findById(id).filter(Empresa::isAtiva).filter(Empresa::isAprovada)
                 .orElseThrow(() -> new NaoEncontradoException("Empresa não encontrada."));
         return EmpresaPublicaResponse.de(empresa, quadraService.ativasDaEmpresa(id));
     }

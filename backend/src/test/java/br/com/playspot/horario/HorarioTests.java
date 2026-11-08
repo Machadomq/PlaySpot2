@@ -54,8 +54,14 @@ class HorarioTests {
     @BeforeEach
     void prepara() throws Exception {
         dono = usuarios.save(new Usuario("Dona", "dona@exemplo.com", "h", null, Papel.DONO));
-        mockMvc.perform(put("/api/dono/empresa").with(como(dono))
+        String empresa = mockMvc.perform(put("/api/dono/empresa").with(como(dono))
                         .contentType(MediaType.APPLICATION_JSON).content(EMPRESA))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+        Matcher idEmpresa = Pattern.compile("\"id\":(\\d+)").matcher(empresa);
+        idEmpresa.find();
+        mockMvc.perform(post("/api/admin/empresas/" + idEmpresa.group(1) + "/aprovacao")
+                        .with(jwt().authorities(new SimpleGrantedAuthority("ROLE_ADMIN"))))
                 .andExpect(status().isOk());
         short esporteId = jdbc.queryForObject("select id from esporte where nome = 'Padel'", Short.class);
         String corpo = mockMvc.perform(post("/api/dono/quadras").with(como(dono))
