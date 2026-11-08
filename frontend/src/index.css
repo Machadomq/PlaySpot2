@@ -1484,10 +1484,11 @@ button.horario:not(.selecionado, :disabled) {
 
 .logo {
   display: inline-block;
-  font-family: var(--titulos);
-  font-size: 1.55rem;
-  font-weight: 800;
-  letter-spacing: -0.045em;
+  font-family: 'Kanit', var(--titulos);
+  font-size: 1.6rem;
+  font-style: italic;
+  font-weight: 700;
+  letter-spacing: -0.035em;
   line-height: 1;
   white-space: nowrap;
 }
