@@ -13,7 +13,15 @@ export default function Layout() {
         <nav>
           {usuario ? (
             <>
-              <NavLink to="/">Minha conta</NavLink>
+              {usuario.papel === 'DONO' && (
+                <>
+                  <NavLink to="/dono/empresa">Empresa</NavLink>
+                  <NavLink to="/dono/quadras">Quadras</NavLink>
+                </>
+              )}
+              <NavLink to="/" end>
+                Conta
+              </NavLink>
               <button type="button" className="secundario" onClick={sair}>
                 Sair
               </button>

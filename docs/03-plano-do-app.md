@@ -11,7 +11,8 @@
 | Receita | Grátis no início; a forma de cobrança será decidida com dados de uso. |
 | Confirmação da reserva | Automática, se o horário estiver livre. |
 | Cancelamento | Cada empresa define a antecedência mínima. Depois do prazo, o jogador fala com o local. |
-| Cadastro da empresa | Depois do registro do dono, numa tela "Minha empresa". |
+| Cadastro da empresa | Depois do registro do dono, numa tela "Minha empresa". Uma empresa por conta. |
+| Fotos | Até 5 por quadra no lançamento. Pasta local em desenvolvimento; provedor definido na Fase 7. |
 
 ## Já pronto
 
@@ -77,6 +78,7 @@
 
 ### Fase 7: Produção
 - Hospedagem, domínio e HTTPS
+- Provedor de armazenamento das fotos
 - Segredos fora do código (`JWT_SECRET` e banco)
 - Revisão do armazenamento do token (cookie `HttpOnly`)
 - Limite de tentativas de login
@@ -102,7 +104,6 @@
 
 | Fase | Pergunta |
 |---|---|
-| 1 | Fotos das quadras entram no lançamento? Exigem armazenamento de arquivos. |
 | 3 | Com quanta antecedência o jogador pode reservar? |
 | 3 | A busca usa só cidade ou também distância pelo mapa? |
 | 5 | Avisos também por WhatsApp? Têm custo por mensagem. |

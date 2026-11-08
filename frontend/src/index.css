@@ -91,7 +91,14 @@ label {
   font-weight: 500;
 }
 
-input:not([type='radio']) {
+.cartao.largo {
+  max-width: 720px;
+}
+
+input:not([type='radio'], [type='checkbox']),
+textarea,
+select {
+  width: 100%;
   font: inherit;
   padding: 10px 12px;
   border: 1px solid var(--borda);
@@ -192,6 +199,135 @@ dt {
 
 dd {
   margin: 0;
+}
+
+.topo nav {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.linha {
+  display: flex;
+  gap: 12px;
+}
+
+.cresce {
+  flex: 1;
+  min-width: 0;
+}
+
+.uf {
+  width: 72px;
+}
+
+.checks {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 0 12px;
+}
+
+.sucesso {
+  margin: 0;
+  color: var(--destaque);
+  font-size: 0.9rem;
+}
+
+.cabecalho-secao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.cabecalho-secao h1 {
+  margin: 0;
+}
+
+.botao {
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: var(--destaque);
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.vazio {
+  color: var(--texto-suave);
+}
+
+.lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.lista li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 0;
+  border-top: 1px solid var(--borda);
+}
+
+.lista img,
+.sem-foto {
+  width: 64px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  object-fit: cover;
+  background: var(--fundo);
+}
+
+.lista small {
+  display: block;
+  color: var(--texto-suave);
+}
+
+.etiqueta {
+  padding: 2px 8px;
+  border: 1px solid var(--borda);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  color: var(--texto-suave);
+}
+
+.secao-fotos {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--borda);
+}
+
+h2 {
+  margin: 0 0 12px;
+  font-size: 1.1rem;
+}
+
+.fotos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.fotos figure {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+}
+
+.fotos img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.fotos button {
+  padding: 5px 8px;
+  font-size: 0.85rem;
 }
 
 .carregando {
