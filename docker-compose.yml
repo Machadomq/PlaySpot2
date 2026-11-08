@@ -1,0 +1,21 @@
+# Banco de dados para DESENVOLVIMENTO local. Não usar estas credenciais em produção.
+services:
+  db:
+    image: postgres:17
+    container_name: playspot-db
+    environment:
+      POSTGRES_DB: playspot
+      POSTGRES_USER: playspot
+      POSTGRES_PASSWORD: playspot
+    ports:
+      - "5432:5432"
+    volumes:
+      - playspot-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U playspot -d playspot"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  playspot-data:
