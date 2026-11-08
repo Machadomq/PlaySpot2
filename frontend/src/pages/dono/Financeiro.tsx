@@ -50,7 +50,7 @@ export default function Financeiro() {
       {erro && <p className="erro resultado-vazio" role="alert">{erro}</p>}
       {resumo && (
         <>
-          <dl className="indicadores">
+          <dl className="indicadores financeiro">
             <div>
               <dt>Recebido</dt>
               <dd>{formatarPreco(resumo.recebido)}</dd>

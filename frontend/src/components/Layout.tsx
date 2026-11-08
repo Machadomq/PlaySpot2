@@ -11,7 +11,7 @@ import {
   UserRound,
   Wallet,
 } from 'lucide-react'
-import { Link, NavLink, Outlet } from 'react-router-dom'
+import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import type { Papel } from '../api/tipos'
 import { useAuth } from '../auth/AuthContext'
 
@@ -38,6 +38,7 @@ const DESTINOS: Record<Papel, Destino[]> = {
 
 export default function Layout() {
   const { usuario, sair } = useAuth()
+  const { pathname } = useLocation()
   const destinos = usuario ? DESTINOS[usuario.papel] : [BUSCAR, { para: '/login', rotulo: 'Entrar', Icone: LogIn }]
 
   const links = destinos.map(({ para, rotulo, Icone }) => (
@@ -66,7 +67,7 @@ export default function Layout() {
           </button>
         )}
       </header>
-      <div id="conteudo">
+      <div id="conteudo" key={pathname} className="transicao">
         <Outlet />
       </div>
       <nav className="abas" aria-label="Navegação inferior">

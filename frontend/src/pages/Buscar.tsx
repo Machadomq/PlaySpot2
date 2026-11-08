@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import type { FormEvent } from 'react'
-import { LocateFixed, MapPin, Search } from 'lucide-react'
+import type { CSSProperties, FormEvent } from 'react'
+import { ImageOff, LocateFixed, MapPin, Search } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { api, mensagemDeErro } from '../api/client'
 import type { Esporte, ResultadoBusca } from '../api/tipos'
@@ -28,6 +28,7 @@ export default function Buscar() {
   const [resposta, setResposta] = useState<Resposta | null>(null)
   const [localizando, setLocalizando] = useState(() => 'geolocation' in navigator)
   const [erroLocal, setErroLocal] = useState<string | null>(null)
+  const [destaque, setDestaque] = useState<number | null>(null)
 
   const pedirPosicao = useCallback((avisarSeFalhar: boolean) => {
     navigator.geolocation.getCurrentPosition(
@@ -176,7 +177,13 @@ export default function Buscar() {
       {!origem && !localizando && !erro && (
         <p className="estado-vazio">Digite sua cidade para ver as quadras disponíveis.</p>
       )}
-      {(localizando || buscando) && !resultados && <p className="carregando">Procurando quadras…</p>}
+      {(localizando || buscando) && !resultados && !erro && (
+        <div className="esqueletos" role="status" aria-label="Procurando quadras">
+          <div className="esqueleto" />
+          <div className="esqueleto" />
+          <div className="esqueleto" />
+        </div>
+      )}
 
       {resultados?.length === 0 && (
         <p className="estado-vazio">Nenhum horário livre nesta data. Tente outro dia ou outro esporte.</p>
@@ -187,13 +194,22 @@ export default function Buscar() {
           <div>
             <h2>{titulo}</h2>
             <ul>
-              {resultados.map((resultado) => (
-                <li key={resultado.id}>
+              {resultados.map((resultado, indice) => (
+                <li
+                  key={resultado.id}
+                  style={{ '--i': Math.min(indice, 8) } as CSSProperties}
+                  onMouseEnter={() => setDestaque(resultado.id)}
+                  onMouseLeave={() => setDestaque(null)}
+                  onFocus={() => setDestaque(resultado.id)}
+                  onBlur={() => setDestaque(null)}
+                >
                   <Link className="card-local" to={`/empresas/${resultado.id}?data=${data}`}>
                     {resultado.fotoId !== null ? (
                       <img src={`/api/fotos/${resultado.fotoId}`} alt="" />
                     ) : (
-                      <div className="sem-foto" aria-hidden="true" />
+                      <div className="sem-foto" aria-hidden="true">
+                        <ImageOff />
+                      </div>
                     )}
                     <div className="card-local-texto">
                       <h3>{resultado.nome}</h3>
@@ -216,7 +232,7 @@ export default function Buscar() {
           </div>
           {pontos.length > 0 && (
             <div className="resultados-mapa">
-              <MapaResultados pontos={pontos} data={data} />
+              <MapaResultados pontos={pontos} data={data} destaque={destaque} />
             </div>
           )}
         </section>
