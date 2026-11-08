@@ -223,6 +223,12 @@ export default function QuadraFormulario() {
       )}
 
       <p className="rodape">
+        {quadraId !== null && (
+          <>
+            <Link to={`/dono/quadras/${quadraId}/horarios`}>Configurar horários e preços</Link>
+            {' · '}
+          </>
+        )}
         <Link to="/dono/quadras">Voltar para as quadras</Link>
       </p>
     </main>

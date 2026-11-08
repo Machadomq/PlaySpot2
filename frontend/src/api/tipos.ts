@@ -52,6 +52,22 @@ export interface Quadra {
   fotoIds: number[]
 }
 
+export interface FaixaHorario {
+  diaSemana: number
+  horaInicio: string
+  horaFim: string
+  precoHora: number
+}
+
+export interface HorarioDisponivel {
+  inicio: string
+  fim: string
+  horaInicio: string
+  horaFim: string
+  preco: number
+  livre: boolean
+}
+
 export interface DadosCadastro {
   nome: string
   email: string

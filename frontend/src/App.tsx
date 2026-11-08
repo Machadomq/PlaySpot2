@@ -6,6 +6,7 @@ import Layout from './components/Layout'
 import Cadastro from './pages/Cadastro'
 import Conta from './pages/Conta'
 import Login from './pages/Login'
+import HorariosQuadra from './pages/dono/HorariosQuadra'
 import MinhaEmpresa from './pages/dono/MinhaEmpresa'
 import QuadraFormulario from './pages/dono/QuadraFormulario'
 import Quadras from './pages/dono/Quadras'
@@ -39,6 +40,7 @@ export default function App() {
         <Route path="/dono/quadras" element={<RotaDono><Quadras /></RotaDono>} />
         <Route path="/dono/quadras/nova" element={<RotaDono><QuadraFormulario /></RotaDono>} />
         <Route path="/dono/quadras/:id" element={<RotaDono><QuadraFormulario /></RotaDono>} />
+        <Route path="/dono/quadras/:id/horarios" element={<RotaDono><HorariosQuadra /></RotaDono>} />
         <Route path="/login" element={<Login />} />
         <Route path="/cadastro" element={<Cadastro />} />
         <Route path="*" element={<Navigate to="/" replace />} />

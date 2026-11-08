@@ -104,7 +104,7 @@ public class QuadraService {
     }
 
     /** Busca sempre dentro da empresa do dono: a quadra de outra empresa se comporta como inexistente. */
-    private Quadra quadraDoDono(Long donoId, Long quadraId) {
+    public Quadra quadraDoDono(Long donoId, Long quadraId) {
         return empresas.findByDonoId(donoId)
                 .flatMap(empresa -> quadras.findByIdAndEmpresaId(quadraId, empresa.getId()))
                 .orElseThrow(() -> new NaoEncontradoException("Quadra não encontrada."));
