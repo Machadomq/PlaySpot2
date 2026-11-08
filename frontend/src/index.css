@@ -1515,3 +1515,15 @@ button.horario:not(.selecionado, :disabled) {
 .auth-arte .logo {
   font-size: 2.6rem;
 }
+
+/* Mapa no tom do site: o filtro vale só para o fundo, os marcadores ficam em outra camada */
+
+.leaflet-tile-pane {
+  filter: grayscale(1) sepia(1) hue-rotate(180deg) saturate(0.7) brightness(1) contrast(0.95);
+}
+
+@media (prefers-color-scheme: dark) {
+  .leaflet-tile-pane {
+    filter: invert(1) grayscale(1) sepia(1) hue-rotate(180deg) saturate(0.7) brightness(0.9) contrast(0.9);
+  }
+}

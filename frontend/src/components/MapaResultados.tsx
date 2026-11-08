@@ -33,7 +33,7 @@ export default function MapaResultados({ pontos, data, destaque = null }: Props)
       // o Leaflet interpreta texto como HTML: o nome, escrito pelo dono, vai como conteúdo de um elemento
       const rotulo = document.createElement('span')
       rotulo.textContent = ponto.nome
-      const marcador = L.circleMarker([ponto.latitude, ponto.longitude], { radius: 10, color: '#12284c', fillOpacity: 0.85 })
+      const marcador = L.circleMarker([ponto.latitude, ponto.longitude], { radius: 10, color: '#ffffff', weight: 2, fillColor: '#12284c', fillOpacity: 1 })
         .bindTooltip(rotulo)
         .on('click', () => navegar(`/empresas/${ponto.id}?data=${data}`))
         .addTo(mapa)
@@ -51,7 +51,7 @@ export default function MapaResultados({ pontos, data, destaque = null }: Props)
   useEffect(() => {
     for (const [id, marcador] of marcadores.current) {
       const ativo = id === destaque
-      marcador.setStyle({ fillColor: ativo ? '#d6f24a' : '#12284c', fillOpacity: ativo ? 1 : 0.85 })
+      marcador.setStyle({ fillColor: ativo ? '#d6f24a' : '#12284c', fillOpacity: 1 })
       marcador.setRadius(ativo ? 14 : 10)
       if (ativo) marcador.bringToFront()
     }
