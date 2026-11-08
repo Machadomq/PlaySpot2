@@ -1524,6 +1524,6 @@ button.horario:not(.selecionado, :disabled) {
 
 @media (prefers-color-scheme: dark) {
   .leaflet-tile-pane {
-    filter: invert(1) grayscale(1) sepia(1) hue-rotate(180deg) saturate(0.7) brightness(0.9) contrast(0.9);
+    filter: grayscale(1) sepia(1) hue-rotate(180deg) saturate(1.1) brightness(0.8) contrast(1.1);
   }
 }
