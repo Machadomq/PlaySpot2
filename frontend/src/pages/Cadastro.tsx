@@ -4,7 +4,6 @@ import { Link, Navigate, useLocation } from 'react-router-dom'
 import { ApiError } from '../api/client'
 import type { DadosCadastro } from '../api/tipos'
 import { useAuth } from '../auth/AuthContext'
-import CenaQuadra from '../components/CenaQuadra'
 
 export default function Cadastro() {
   const { usuario, cadastrar } = useAuth()
@@ -41,11 +40,10 @@ export default function Cadastro() {
   return (
     <div className="auth">
     <aside className="auth-arte">
-      <CenaQuadra />
-      <p>Quem joga acha quadra. Quem tem quadra acha jogador.</p>
+      <p>Reserve quadras ou anuncie as suas.</p>
     </aside>
     <main className="cartao">
-      <h1>Vamos começar</h1>
+      <h1>Criar conta</h1>
       <form onSubmit={aoEnviar}>
         <fieldset className="papeis">
           <legend>Eu quero…</legend>
@@ -56,7 +54,6 @@ export default function Cadastro() {
               checked={papel === 'JOGADOR'}
               onChange={() => setPapel('JOGADOR')}
             />
-            <span aria-hidden="true">🏃</span>
             Reservar quadras
           </label>
           <label className="papel">
@@ -66,7 +63,6 @@ export default function Cadastro() {
               checked={papel === 'DONO'}
               onChange={() => setPapel('DONO')}
             />
-            <span aria-hidden="true">🏟️</span>
             Anunciar minhas quadras
           </label>
         </fieldset>

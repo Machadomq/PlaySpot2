@@ -54,7 +54,6 @@ export default function Layout() {
       </a>
       <header className="topo">
         <Link to="/" className="marca">
-          <span className="marca-bola" aria-hidden="true" />
           PlaySpot
         </Link>
         <nav className="menu" aria-label="Principal">

@@ -4,10 +4,8 @@ import { LocateFixed, MapPin, Search } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { api, mensagemDeErro } from '../api/client'
 import type { Esporte, ResultadoBusca } from '../api/tipos'
-import CenaQuadra from '../components/CenaQuadra'
 import MapaResultados from '../components/MapaResultados'
 import type { PontoDoMapa } from '../components/MapaResultados'
-import { iconeDoEsporte } from '../esportes'
 import { dataMaxima, formatarPreco, hoje } from '../formatos'
 
 interface Coordenadas {
@@ -96,18 +94,15 @@ export default function Buscar() {
   return (
     <main className="pagina">
       <section className="heroi">
-        <CenaQuadra />
-        <h1>
-          Bora <em>jogar?</em>
-        </h1>
-        <p>Encontre uma quadra perto de você, compare os preços e reserve em poucos toques.</p>
+        <h1>Encontre onde jogar</h1>
+        <p>Compare quadras e preços perto de você e reserve o horário.</p>
       </section>
 
       <form className="busca" onSubmit={aoEnviar}>
         <fieldset className="chips">
-          <legend>Qual esporte?</legend>
+          <legend>Esporte</legend>
           <button type="button" className="chip" aria-pressed={esporteId === ''} onClick={() => setEsporteId('')}>
-            <span aria-hidden="true">🙌</span> Todos
+            Todos
           </button>
           {esportes.map((esporte) => (
             <button
@@ -117,14 +112,14 @@ export default function Buscar() {
               aria-pressed={esporteId === String(esporte.id)}
               onClick={() => setEsporteId(String(esporte.id))}
             >
-              <span aria-hidden="true">{iconeDoEsporte(esporte.nome)}</span> {esporte.nome}
+              {esporte.nome}
             </button>
           ))}
         </fieldset>
 
         <div className="busca-campos">
           <label>
-            Quando?
+            Data
             <input
               type="date"
               value={data}
@@ -135,7 +130,7 @@ export default function Buscar() {
             />
           </label>
           <label>
-            Até que distância?
+            Distância
             <select value={raioKm} onChange={(e) => setRaioKm(e.target.value)}>
               <option value="10">10 km</option>
               <option value="30">30 km</option>
@@ -180,7 +175,7 @@ export default function Buscar() {
       )}
 
       {resultados?.length === 0 && (
-        <p className="estado-vazio"><span aria-hidden="true">🥅</span> Nenhum horário livre com esses filtros. Tente outro dia ou aumente a distância.</p>
+        <p className="estado-vazio">Nenhum horário livre com esses filtros. Tente outro dia ou aumente a distância.</p>
       )}
 
       {resultados && resultados.length > 0 && (
@@ -202,7 +197,7 @@ export default function Buscar() {
                       {resultado.distanciaKm !== null && ` · ${resultado.distanciaKm.toFixed(1).replace('.', ',')} km`}
                     </p>
                     <p className="card-esportes">
-                      {resultado.esportes.map((e) => `${iconeDoEsporte(e)} ${e}`).join('  ')}
+                      {resultado.esportes.join(' · ')}
                     </p>
                   </div>
                   <div className="card-local-preco">

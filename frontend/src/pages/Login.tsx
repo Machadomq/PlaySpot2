@@ -3,7 +3,6 @@ import type { FormEvent } from 'react'
 import { Link, Navigate, useLocation } from 'react-router-dom'
 import { ApiError } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
-import CenaQuadra from '../components/CenaQuadra'
 
 export default function Login() {
   const { usuario, entrar } = useAuth()
@@ -33,11 +32,10 @@ export default function Login() {
   return (
     <div className="auth">
     <aside className="auth-arte">
-      <CenaQuadra />
-      <p>Sua próxima partida começa aqui.</p>
+      <p>Reserve quadras esportivas perto de você.</p>
     </aside>
     <main className="cartao">
-      <h1>Que bom te ver!</h1>
+      <h1>Entrar</h1>
       <form onSubmit={aoEnviar}>
         <label>
           E-mail

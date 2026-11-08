@@ -25,7 +25,7 @@ export default function MapaResultados({ pontos, data }: { pontos: PontoDoMapa[]
       // o Leaflet interpreta texto como HTML: o nome, escrito pelo dono, vai como conteúdo de um elemento
       const rotulo = document.createElement('span')
       rotulo.textContent = ponto.nome
-      L.circleMarker([ponto.latitude, ponto.longitude], { radius: 10, color: '#15803d', fillOpacity: 0.8 })
+      L.circleMarker([ponto.latitude, ponto.longitude], { radius: 10, color: '#12284c', fillOpacity: 0.8 })
         .bindTooltip(rotulo)
         .on('click', () => navegar(`/empresas/${ponto.id}?data=${data}`))
         .addTo(mapa)

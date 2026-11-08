@@ -1,24 +1,22 @@
 :root {
-  --papel: #fbf7ec;
+  --papel: #f6f6f3;
   --cartao: #ffffff;
-  --suave: #f1ecdd;
-  --tinta: #14231e;
-  --tinta-2: #4c5b55;
-  --contorno: #14231e;
-  --contorno-suave: #d9d3c2;
-  --quadra: #0b7a4b;
-  --quadra-forte: #075c38;
-  --sobre-quadra: #ffffff;
-  --heroi: #0b7a4b;
-  --sobre-heroi: #ffffff;
-  --bola: #d6f24a;
-  --sobre-bola: #14231e;
-  --saibro: #c2410c;
+  --suave: #eff0f2;
+  --tinta: #111c2e;
+  --tinta-2: #56617a;
+  --contorno: #d3d7df;
+  --contorno-suave: #e6e8ec;
+  --campo: #8d96a6;
+  --primaria: #12284c;
+  --sobre-primaria: #ffffff;
+  --faixa: #12284c;
+  --sobre-faixa: #ffffff;
+  --selecao: #12284c;
+  --sobre-selecao: #ffffff;
   --erro: #b3261e;
-  --erro-fundo: #fde8e4;
-  --sombra: #14231e;
-  --raio: 20px;
-  --titulos: 'Bricolage Grotesque Variable', system-ui, sans-serif;
+  --erro-fundo: #fdeeec;
+  --raio: 12px;
+  --titulos: 'Figtree Variable', system-ui, sans-serif;
 
   font: 17px/1.55 'Figtree Variable', system-ui, 'Segoe UI', sans-serif;
   color: var(--tinta);
@@ -28,21 +26,21 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --papel: #0f1a16;
-    --cartao: #18261f;
-    --suave: #22332b;
-    --tinta: #f5f1e4;
-    --tinta-2: #b4c0b8;
-    --contorno: #5b7267;
-    --contorno-suave: #34473d;
-    --quadra: #4ade9a;
-    --quadra-forte: #7ceab5;
-    --sobre-quadra: #06231a;
-    --heroi: #115c3b;
-    --saibro: #fb923c;
+    --papel: #0b1424;
+    --cartao: #131f33;
+    --suave: #1c2a42;
+    --tinta: #eef1f6;
+    --tinta-2: #a9b4c4;
+    --contorno: #2c3a52;
+    --contorno-suave: #222f45;
+    --campo: #5f6d86;
+    --primaria: #a9c4ee;
+    --sobre-primaria: #0b1424;
+    --faixa: #16284a;
+    --selecao: #dbe6f7;
+    --sobre-selecao: #0b1424;
     --erro: #fca5a5;
-    --erro-fundo: #451a17;
-    --sombra: #05100c;
+    --erro-fundo: #3f1d1d;
   }
 }
 
@@ -66,7 +64,7 @@ h2 {
 h1 {
   margin: 0 0 20px;
   font-size: 2rem;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 h2 {
@@ -80,7 +78,7 @@ p {
 }
 
 a {
-  color: var(--quadra);
+  color: var(--primaria);
   font-weight: 600;
   text-underline-offset: 3px;
 }
@@ -92,7 +90,7 @@ svg.lucide {
 }
 
 :focus-visible {
-  outline: 3px solid var(--quadra);
+  outline: 3px solid var(--primaria);
   outline-offset: 2px;
 }
 
@@ -103,8 +101,8 @@ svg.lucide {
   z-index: 2000;
   padding: 10px 16px;
   border-radius: 10px;
-  background: var(--bola);
-  color: var(--sobre-bola);
+  background: var(--selecao);
+  color: var(--sobre-selecao);
 }
 
 .pular:focus {
@@ -122,7 +120,7 @@ svg.lucide {
   gap: 24px;
   padding: 10px 24px;
   background: var(--cartao);
-  border-bottom: 2px solid var(--contorno);
+  border-bottom: 1px solid var(--contorno);
 }
 
 .marca {
@@ -132,28 +130,10 @@ svg.lucide {
   margin-right: auto;
   font-family: var(--titulos);
   font-size: 1.45rem;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: -0.03em;
   color: var(--tinta);
   text-decoration: none;
-}
-
-.marca-bola {
-  position: relative;
-  width: 28px;
-  height: 28px;
-  border: 2px solid var(--sobre-bola);
-  border-radius: 50%;
-  background: var(--bola);
-  overflow: hidden;
-}
-
-.marca-bola::after {
-  content: '';
-  position: absolute;
-  inset: -8px 9px;
-  border: 2px solid var(--sobre-bola);
-  border-radius: 50%;
 }
 
 .menu {
@@ -173,7 +153,7 @@ svg.lucide {
 .menu a {
   min-height: 44px;
   padding: 0 14px;
-  border-radius: 999px;
+  border-radius: 8px;
 }
 
 .menu a:hover {
@@ -181,14 +161,14 @@ svg.lucide {
 }
 
 .menu a.active {
-  background: var(--bola);
-  color: var(--sobre-bola);
+  background: var(--suave);
+  color: var(--primaria);
+  font-weight: 600;
 }
 
 button.sair {
   min-height: 44px;
   padding: 0 14px;
-  box-shadow: none;
 }
 
 .abas {
@@ -205,28 +185,15 @@ button,
   gap: 8px;
   min-height: 48px;
   padding: 10px 22px;
-  border: 2px solid var(--contorno);
-  border-radius: 999px;
-  background: var(--quadra);
-  color: var(--sobre-quadra);
+  border: 1px solid var(--primaria);
+  border-radius: 8px;
+  background: var(--primaria);
+  color: var(--sobre-primaria);
   font: inherit;
   font-weight: 700;
   text-decoration: none;
   cursor: pointer;
-  box-shadow: 3px 3px 0 var(--sombra);
-  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
-}
-
-button:hover:not(:disabled),
-.botao:hover {
-  transform: translate(-1px, -1px);
-  box-shadow: 4px 4px 0 var(--sombra);
-}
-
-button:active:not(:disabled),
-.botao:active {
-  transform: translate(3px, 3px);
-  box-shadow: 0 0 0 var(--sombra);
+  transition: background 0.12s ease;
 }
 
 button:disabled {
@@ -235,6 +202,7 @@ button:disabled {
 }
 
 button.secundario {
+  border-color: var(--contorno);
   background: var(--cartao);
   color: var(--tinta);
 }
@@ -244,10 +212,11 @@ button.secundario:hover:not(:disabled) {
 }
 
 button.destaque {
+  border-color: var(--selecao);
   width: 100%;
   min-height: 58px;
-  background: var(--bola);
-  color: var(--sobre-bola);
+  background: var(--selecao);
+  color: var(--sobre-selecao);
   font-size: 1.1rem;
 }
 
@@ -255,7 +224,6 @@ button.compacto {
   min-height: 40px;
   padding: 5px 14px;
   font-size: 0.9rem;
-  box-shadow: 2px 2px 0 var(--sombra);
 }
 
 button.link {
@@ -263,15 +231,12 @@ button.link {
   padding: 0;
   border: 0;
   background: none;
-  color: var(--quadra);
+  color: var(--primaria);
   font: inherit;
   text-transform: capitalize;
-  box-shadow: none;
 }
 
 button.link:hover:not(:disabled) {
-  transform: none;
-  box-shadow: none;
   text-decoration: underline;
 }
 
@@ -295,8 +260,8 @@ select {
   width: 100%;
   min-height: 48px;
   padding: 10px 14px;
-  border: 2px solid var(--contorno);
-  border-radius: 12px;
+  border: 1px solid var(--campo);
+  border-radius: 8px;
   background: var(--cartao);
   color: inherit;
   font: inherit;
@@ -307,14 +272,14 @@ input[type='radio'],
 input[type='checkbox'] {
   width: 20px;
   height: 20px;
-  accent-color: var(--quadra);
+  accent-color: var(--primaria);
 }
 
 fieldset {
   margin: 0;
   padding: 10px 14px 14px;
-  border: 2px solid var(--contorno-suave);
-  border-radius: 14px;
+  border: 1px solid var(--contorno-suave);
+  border-radius: 10px;
 }
 
 legend {
@@ -360,7 +325,7 @@ button.alinhado {
 .erro {
   margin: 0;
   padding: 12px 14px;
-  border: 2px solid var(--erro);
+  border: 1px solid var(--erro);
   border-radius: 12px;
   background: var(--erro-fundo);
   color: var(--erro);
@@ -376,17 +341,17 @@ button.alinhado {
 
 .sucesso {
   margin: 0;
-  color: var(--quadra);
+  color: var(--primaria);
   font-weight: 700;
 }
 
 .aviso {
   margin: 0 0 16px;
   padding: 12px 14px;
-  border: 2px solid var(--contorno);
+  border: 1px solid var(--contorno);
   border-radius: 12px;
-  background: var(--bola);
-  color: var(--sobre-bola);
+  background: var(--selecao);
+  color: var(--sobre-selecao);
   font-size: 0.95rem;
 }
 
@@ -403,10 +368,9 @@ button.alinhado {
   max-width: 480px;
   margin: 32px auto;
   padding: 30px 26px;
-  border: 2px solid var(--contorno);
+  border: 1px solid var(--contorno);
   border-radius: var(--raio);
   background: var(--cartao);
-  box-shadow: 6px 6px 0 var(--sombra);
 }
 
 .cartao.largo {
@@ -453,7 +417,7 @@ button.alinhado {
 .secao-fotos {
   margin-top: 28px;
   padding-top: 22px;
-  border-top: 2px dashed var(--contorno-suave);
+  border-top: 1px dashed var(--contorno-suave);
 }
 
 dl {
@@ -477,8 +441,8 @@ dd {
 .etiqueta {
   display: inline-block;
   padding: 2px 10px;
-  border: 2px solid var(--contorno);
-  border-radius: 999px;
+  border: 1px solid var(--contorno);
+  border-radius: 8px;
   background: var(--suave);
   font-size: 0.8rem;
   font-weight: 700;
@@ -495,7 +459,7 @@ dd {
   align-items: center;
   gap: 14px;
   padding: 14px 0;
-  border-top: 2px solid var(--contorno-suave);
+  border-top: 1px solid var(--contorno-suave);
 }
 
 .lista small,
@@ -512,15 +476,13 @@ dd {
   width: 76px;
   height: 58px;
   flex-shrink: 0;
-  border: 2px solid var(--contorno);
+  border: 1px solid var(--contorno);
   border-radius: 12px;
   object-fit: cover;
 }
 
 .sem-foto {
-  background:
-    linear-gradient(90deg, transparent 49%, rgb(255 255 255 / 0.75) 49% 51%, transparent 51%),
-    var(--heroi);
+  background: var(--suave);
 }
 
 .preco {
@@ -539,74 +501,33 @@ dd {
 
 .heroi {
   position: relative;
-  padding: 56px 40px 110px;
-  border: 2px solid var(--contorno);
-  border-radius: 28px;
-  background: var(--heroi);
-  color: var(--sobre-heroi);
+  padding: 48px 40px 104px;
+  border: 1px solid var(--contorno);
+  border-radius: 12px;
+  background: var(--faixa);
+  color: var(--sobre-faixa);
   overflow: hidden;
 }
 
 .heroi h1 {
   position: relative;
   margin: 0 0 12px;
-  font-size: clamp(3.2rem, 11vw, 6.5rem);
-  line-height: 0.95;
-  letter-spacing: -0.04em;
+  font-size: clamp(2.3rem, 6vw, 3.4rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
 }
 
 .heroi h1 em {
   font-style: normal;
-  color: var(--bola);
+  color: var(--selecao);
 }
 
 .heroi p {
   position: relative;
-  max-width: 460px;
+  max-width: 520px;
   margin: 0;
-  font-size: 1.2rem;
-}
-
-.cena-quadra {
-  position: absolute;
-  inset: 0;
-  color: rgb(255 255 255 / 0.22);
-}
-
-/* as linhas somem atrás do texto, para não atrapalhar a leitura */
-.heroi .cena-quadra,
-.capa-local .cena-quadra {
-  mask-image: linear-gradient(100deg, transparent 42%, #000 66%);
-}
-
-.auth-arte .cena-quadra {
-  mask-image: linear-gradient(to top, transparent 34%, #000 58%);
-}
-
-.cena-quadra svg {
-  width: 100%;
-  height: 100%;
-}
-
-.bola {
-  position: absolute;
-  top: 14%;
-  right: 12%;
-  width: clamp(54px, 9vw, 96px);
-  aspect-ratio: 1;
-  border: 2px solid var(--sobre-bola);
-  border-radius: 50%;
-  background: var(--bola);
-  animation: quicar 2.4s cubic-bezier(0.3, 0, 0.7, 1) infinite alternate;
-}
-
-@keyframes quicar {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(46px) scaleY(0.93);
-  }
+  color: rgb(255 255 255 / 0.82);
+  font-size: 1.1rem;
 }
 
 .busca {
@@ -615,10 +536,9 @@ dd {
   max-width: 780px;
   margin: -78px auto 0;
   padding: 24px;
-  border: 2px solid var(--contorno);
-  border-radius: 24px;
+  border: 1px solid var(--contorno);
+  border-radius: 12px;
   background: var(--cartao);
-  box-shadow: 6px 6px 0 var(--sombra);
 }
 
 .chips {
@@ -635,22 +555,18 @@ dd {
 }
 
 button.chip {
+  border-color: var(--contorno);
   min-height: 44px;
   padding: 6px 15px;
   background: var(--cartao);
   color: var(--tinta);
   font-weight: 600;
-  box-shadow: none;
-}
-
-button.chip:hover:not(:disabled) {
-  box-shadow: 2px 2px 0 var(--sombra);
 }
 
 button.chip[aria-pressed='true'] {
-  background: var(--bola);
-  color: var(--sobre-bola);
-  box-shadow: 2px 2px 0 var(--sombra);
+  border-color: var(--selecao);
+  background: var(--selecao);
+  color: var(--sobre-selecao);
 }
 
 .busca-campos {
@@ -679,7 +595,7 @@ button.chip[aria-pressed='true'] {
 .ou::after {
   content: '';
   flex: 1;
-  border-top: 2px dashed var(--contorno-suave);
+  border-top: 1px dashed var(--contorno-suave);
 }
 
 .passos {
@@ -700,17 +616,11 @@ button.chip[aria-pressed='true'] {
 
 .passos li::before {
   content: counter(passo);
-  display: grid;
-  place-items: center;
-  width: 42px;
-  height: 42px;
-  margin-bottom: 8px;
-  border: 2px solid var(--contorno);
-  border-radius: 50%;
-  background: var(--bola);
-  color: var(--sobre-bola);
+  display: block;
+  margin-bottom: 4px;
+  color: var(--primaria);
   font-family: var(--titulos);
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .passos strong {
@@ -721,17 +631,11 @@ button.chip[aria-pressed='true'] {
   max-width: 780px;
   margin: 32px auto 0;
   padding: 32px 24px;
-  border: 2px dashed var(--contorno-suave);
+  border: 1px dashed var(--contorno-suave);
   border-radius: var(--raio);
   color: var(--tinta-2);
   font-size: 1.05rem;
   text-align: center;
-}
-
-.estado-vazio span {
-  display: block;
-  margin-bottom: 8px;
-  font-size: 2.4rem;
 }
 
 .resultados {
@@ -758,7 +662,6 @@ button.chip[aria-pressed='true'] {
 .resultados-mapa .mapa {
   height: 460px;
   margin: 0;
-  box-shadow: 6px 6px 0 var(--sombra);
 }
 
 .card-local {
@@ -767,26 +670,20 @@ button.chip[aria-pressed='true'] {
   align-items: center;
   gap: 16px;
   padding: 12px;
-  border: 2px solid var(--contorno);
+  border: 1px solid var(--contorno);
   border-radius: var(--raio);
   background: var(--cartao);
   color: var(--tinta);
   font-weight: 400;
   text-decoration: none;
-  box-shadow: 4px 4px 0 var(--sombra);
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
-}
-
-.card-local:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 6px 6px 0 var(--sombra);
+  transition: background 0.12s ease;
 }
 
 .card-local img,
 .card-local .sem-foto {
   width: 112px;
   height: 96px;
-  border: 2px solid var(--contorno);
+  border: 1px solid var(--contorno);
   border-radius: 12px;
   object-fit: cover;
 }
@@ -827,10 +724,7 @@ button.chip[aria-pressed='true'] {
 }
 
 .selo-livres {
-  padding: 1px 9px;
-  border-radius: 999px;
-  background: var(--bola);
-  color: var(--sobre-bola);
+  color: var(--tinta-2);
   font-size: 0.8rem;
   font-weight: 700;
 }
@@ -840,8 +734,8 @@ button.chip[aria-pressed='true'] {
 .mapa {
   height: 300px;
   margin-top: 16px;
-  border: 2px solid var(--contorno);
-  border-radius: 16px;
+  border: 1px solid var(--contorno);
+  border-radius: 10px;
   isolation: isolate;
 }
 
@@ -883,12 +777,12 @@ button.chip[aria-pressed='true'] {
   position: relative;
   display: flex;
   align-items: flex-end;
-  min-height: 420px;
+  min-height: 380px;
   padding: 36px;
-  border: 2px solid var(--contorno);
+  border: 1px solid var(--contorno);
   border-radius: var(--raio);
-  background: var(--heroi);
-  color: var(--sobre-heroi);
+  background: var(--faixa);
+  color: var(--sobre-faixa);
   overflow: hidden;
 }
 
@@ -896,8 +790,8 @@ button.chip[aria-pressed='true'] {
   position: relative;
   margin: 0;
   font-family: var(--titulos);
-  font-size: 2.3rem;
-  font-weight: 800;
+  font-size: 1.9rem;
+  font-weight: 700;
   line-height: 1.05;
   letter-spacing: -0.03em;
 }
@@ -921,24 +815,19 @@ button.chip[aria-pressed='true'] {
   justify-items: center;
   gap: 2px;
   padding: 14px 10px;
-  border: 2px solid var(--contorno);
-  border-radius: 14px;
+  border: 1px solid var(--contorno);
+  border-radius: 10px;
   text-align: center;
   cursor: pointer;
 }
 
-.papel span {
-  font-size: 1.9rem;
-}
-
 .papel:has(input:checked) {
-  background: var(--bola);
-  color: var(--sobre-bola);
-  box-shadow: 3px 3px 0 var(--sombra);
+  background: var(--selecao);
+  color: var(--sobre-selecao);
 }
 
 .papel:has(input:focus-visible) {
-  outline: 3px solid var(--quadra);
+  outline: 3px solid var(--primaria);
   outline-offset: 2px;
 }
 
@@ -953,10 +842,10 @@ button.chip[aria-pressed='true'] {
   position: relative;
   margin: -30px -26px 22px;
   padding: 44px 26px 26px;
-  border-bottom: 2px solid var(--contorno);
-  border-radius: 18px 18px 0 0;
-  background: var(--heroi);
-  color: var(--sobre-heroi);
+  border-bottom: 1px solid var(--contorno);
+  border-radius: 10px 18px 0 0;
+  background: var(--faixa);
+  color: var(--sobre-faixa);
   overflow: hidden;
 }
 
@@ -987,7 +876,7 @@ button.chip[aria-pressed='true'] {
 .fotos img {
   width: 100%;
   aspect-ratio: 4 / 3;
-  border: 2px solid var(--contorno);
+  border: 1px solid var(--contorno);
   border-radius: 12px;
   object-fit: cover;
 }
@@ -996,7 +885,6 @@ button.chip[aria-pressed='true'] {
   min-height: 40px;
   padding: 5px 8px;
   font-size: 0.85rem;
-  box-shadow: none;
 }
 
 .horarios {
@@ -1012,8 +900,8 @@ button.chip[aria-pressed='true'] {
   display: grid;
   gap: 2px;
   padding: 10px 14px;
-  border: 2px solid var(--contorno-suave);
-  border-radius: 14px;
+  border: 1px solid var(--contorno-suave);
+  border-radius: 10px;
   font-size: 0.95rem;
 }
 
@@ -1033,18 +921,17 @@ button.horario {
   gap: 0;
   width: 100%;
   padding: 10px 14px;
-  border-radius: 14px;
+  border-radius: 10px;
   background: var(--cartao);
   color: var(--tinta);
   font-size: 0.95rem;
   font-weight: 500;
   text-align: left;
-  box-shadow: 3px 3px 0 var(--sombra);
 }
 
 button.horario.selecionado {
-  background: var(--bola);
-  color: var(--sobre-bola);
+  background: var(--selecao);
+  color: var(--sobre-selecao);
 }
 
 button.horario:disabled {
@@ -1052,7 +939,6 @@ button.horario:disabled {
   background: var(--suave);
   color: var(--tinta-2);
   opacity: 1;
-  box-shadow: none;
   text-decoration: line-through;
 }
 
@@ -1064,11 +950,10 @@ button.horario:disabled {
   gap: 10px;
   margin-top: 24px;
   padding: 18px 20px;
-  border: 2px solid var(--contorno);
+  border: 1px solid var(--contorno);
   border-radius: var(--raio);
-  background: var(--bola);
-  color: var(--sobre-bola);
-  box-shadow: 5px 5px 0 var(--sombra);
+  background: var(--selecao);
+  color: var(--sobre-selecao);
 }
 
 .confirmacao p {
@@ -1080,26 +965,29 @@ button.horario:disabled {
 }
 
 .confirmacao input:not([type='radio'], [type='checkbox']) {
-  border-color: var(--sobre-bola);
+  border-color: transparent;
   background: #fff;
-  color: var(--sobre-bola);
+  color: #111c2e;
 }
 
 .confirmacao input[type='radio'] {
-  accent-color: var(--sobre-bola);
+  accent-color: var(--sobre-selecao);
 }
 
 .confirmacao button:not(.secundario) {
-  background: var(--sobre-bola);
-  color: var(--bola);
-  border-color: var(--sobre-bola);
+  background: var(--sobre-selecao);
+  color: var(--selecao);
+  border-color: var(--sobre-selecao);
+}
+
+.confirmacao button.secundario:hover:not(:disabled) {
+  background: transparent;
 }
 
 .confirmacao button.secundario {
   background: transparent;
-  color: var(--sobre-bola);
-  border-color: var(--sobre-bola);
-  box-shadow: none;
+  color: var(--sobre-selecao);
+  border-color: var(--sobre-selecao);
 }
 
 .confirmacao .erro {
@@ -1121,8 +1009,8 @@ button.horario:disabled {
 .bilhetes li {
   display: flex;
   align-items: stretch;
-  border: 2px solid var(--contorno);
-  border-radius: 18px;
+  border: 1px solid var(--contorno);
+  border-radius: 10px;
   background: var(--cartao);
   overflow: hidden;
 }
@@ -1134,16 +1022,16 @@ button.horario:disabled {
   flex-shrink: 0;
   width: 92px;
   padding: 12px 6px;
-  border-right: 2px dashed var(--sobre-bola);
-  background: var(--bola);
-  color: var(--sobre-bola);
+  border-right: 1px dashed var(--sobre-selecao);
+  background: var(--selecao);
+  color: var(--sobre-selecao);
   line-height: 1.1;
 }
 
 .canhoto strong {
   font-family: var(--titulos);
   font-size: 2.1rem;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .canhoto span {
@@ -1187,7 +1075,6 @@ button.horario:disabled {
   min-height: 40px;
   padding: 4px 14px;
   font-size: 0.9rem;
-  box-shadow: none;
 }
 
 /* Horários do dono */
@@ -1205,7 +1092,6 @@ button.horario:disabled {
   min-height: 42px;
   padding: 6px 14px;
   font-size: 0.9rem;
-  box-shadow: none;
 }
 
 .acoes-dia {
@@ -1229,7 +1115,6 @@ fieldset .vazio {
 .navegacao-data button {
   min-height: 44px;
   padding: 6px 16px;
-  box-shadow: none;
 }
 
 .navegacao-data {
@@ -1273,20 +1158,17 @@ fieldset .vazio {
 button.horario-vago {
   flex: 1;
   justify-content: flex-start;
-  border: 2px dashed var(--contorno-suave);
-  border-radius: 14px;
+  border: 1px dashed var(--contorno-suave);
+  border-radius: 10px;
   background: transparent;
   color: var(--tinta-2);
   font-weight: 500;
-  box-shadow: none;
 }
 
 button.horario-vago:hover:not(:disabled) {
-  border-color: var(--quadra);
+  border-color: var(--primaria);
   background: var(--suave);
   color: var(--tinta);
-  transform: none;
-  box-shadow: none;
 }
 
 .item-agenda {
@@ -1295,15 +1177,15 @@ button.horario-vago:hover:not(:disabled) {
   gap: 8px;
   min-width: 0;
   padding: 10px 14px;
-  border: 2px solid var(--contorno);
-  border-left-width: 8px;
-  border-left-color: var(--quadra);
-  border-radius: 14px;
+  border: 1px solid var(--contorno);
+  border-left-width: 3px;
+  border-left-color: var(--primaria);
+  border-radius: 10px;
   background: var(--cartao);
 }
 
 .item-agenda[data-pago='sim'] {
-  background: color-mix(in srgb, var(--quadra) 12%, var(--cartao));
+  background: color-mix(in srgb, var(--primaria) 12%, var(--cartao));
 }
 
 .item-agenda[data-status='FALTOU'] {
@@ -1312,7 +1194,7 @@ button.horario-vago:hover:not(:disabled) {
 
 .item-agenda[data-status='BLOQUEADA'] {
   border-left-color: var(--tinta-2);
-  background: repeating-linear-gradient(135deg, var(--suave) 0 10px, var(--cartao) 10px 20px);
+  background: var(--suave);
 }
 
 .item-info {
@@ -1337,7 +1219,6 @@ button.horario-vago:hover:not(:disabled) {
   min-height: 38px;
   padding: 4px 12px;
   font-size: 0.85rem;
-  box-shadow: none;
 }
 
 /* Indicadores */
@@ -1350,17 +1231,8 @@ button.horario-vago:hover:not(:disabled) {
 
 .indicadores div {
   padding: 14px 16px;
-  border: 2px solid var(--contorno);
-  border-radius: 16px;
-}
-
-.indicadores div:first-child {
-  background: var(--bola);
-  color: var(--sobre-bola);
-}
-
-.indicadores div:first-child dt {
-  color: inherit;
+  border: 1px solid var(--contorno);
+  border-radius: 10px;
 }
 
 .indicadores dt {
@@ -1370,7 +1242,7 @@ button.horario-vago:hover:not(:disabled) {
 .indicadores dd {
   font-family: var(--titulos);
   font-size: 1.6rem;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .secao-fotos form.linha {
@@ -1381,7 +1253,7 @@ button.horario-vago:hover:not(:disabled) {
 
 .leaflet-container {
   font: inherit;
-  border-radius: 14px;
+  border-radius: 10px;
 }
 
 @media (max-width: 860px) {
@@ -1407,10 +1279,6 @@ button.horario-vago:hover:not(:disabled) {
   .auth-arte p {
     font-size: 1.5rem;
   }
-
-  .auth-arte .bola {
-    top: 12%;
-  }
 }
 
 @media (max-width: 720px) {
@@ -1435,7 +1303,7 @@ button.horario-vago:hover:not(:disabled) {
     grid-auto-flow: column;
     padding: 6px 6px calc(6px + env(safe-area-inset-bottom));
     background: var(--cartao);
-    border-top: 2px solid var(--contorno);
+    border-top: 1px solid var(--contorno);
   }
 
   .abas a {
@@ -1443,14 +1311,14 @@ button.horario-vago:hover:not(:disabled) {
     justify-content: center;
     gap: 1px;
     min-height: 56px;
-    border-radius: 14px;
+    border-radius: 10px;
     font-size: 0.75rem;
     font-weight: 600;
   }
 
   .abas a.active {
-    background: var(--bola);
-    color: var(--sobre-bola);
+    background: var(--suave);
+    color: var(--primaria);
   }
 
   .confirmacao {
@@ -1459,11 +1327,6 @@ button.horario-vago:hover:not(:disabled) {
 
   .heroi {
     padding: 36px 22px 100px;
-  }
-
-  .heroi .bola,
-  .capa-local .bola {
-    display: none;
   }
 
   .busca {
@@ -1534,7 +1397,7 @@ button.horario-vago:hover:not(:disabled) {
     justify-content: space-between;
     width: 100%;
     padding: 10px 14px;
-    border-top: 2px dashed var(--contorno-suave);
+    border-top: 1px dashed var(--contorno-suave);
   }
 }
 

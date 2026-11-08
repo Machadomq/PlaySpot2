@@ -3,8 +3,6 @@ import { useLocation, useNavigate, useParams, useSearchParams } from 'react-rout
 import { api, mensagemDeErro } from '../api/client'
 import type { EmpresaPublica as Empresa, HorarioDisponivel, Quadra, Reserva } from '../api/tipos'
 import { useAuth } from '../auth/AuthContext'
-import CenaQuadra from '../components/CenaQuadra'
-import { iconeDoEsporte } from '../esportes'
 import { dataMaxima, formatarPreco, hoje } from '../formatos'
 
 type HorariosPorQuadra = Record<number, HorarioDisponivel[]>
@@ -89,7 +87,6 @@ export default function EmpresaPublica() {
   return (
     <main className="cartao largo">
       <header className="capa-local">
-        <CenaQuadra />
         <h1>{empresa.nome}</h1>
         <p>
           {empresa.endereco}, {empresa.cidade}/{empresa.uf}
@@ -105,7 +102,7 @@ export default function EmpresaPublica() {
       {empresa.quadras.map((quadra) => (
         <section className="secao-fotos" key={quadra.id}>
           <h2>{quadra.nome}</h2>
-          <p className="vazio">{quadra.esportes.map((e) => `${iconeDoEsporte(e.nome)} ${e.nome}`).join('  ')}</p>
+          <p className="vazio">{quadra.esportes.map((e) => e.nome).join(' · ')}</p>
           {quadra.descricao && <p>{quadra.descricao}</p>}
           {quadra.fotoIds.length > 0 && (
             <div className="fotos">
