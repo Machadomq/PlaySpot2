@@ -517,6 +517,138 @@ button.horario:disabled {
   }
 }
 
+.alternador {
+  display: flex;
+  gap: 4px;
+}
+
+.alternador button {
+  padding: 6px 12px;
+}
+
+.navegacao-data {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 8px;
+}
+
+.navegacao-data button {
+  padding: 8px 14px;
+}
+
+.agenda {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.agenda li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 8px 0;
+  border-top: 1px solid var(--borda);
+}
+
+.hora {
+  display: grid;
+  flex-shrink: 0;
+  width: 56px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.hora small {
+  color: var(--texto-suave);
+  font-weight: 400;
+  overflow-wrap: anywhere;
+}
+
+button.horario-vago {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px dashed var(--borda);
+  background: transparent;
+  color: var(--texto-suave);
+  font-weight: 400;
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+button.horario-vago:hover:not(:disabled) {
+  background: var(--fundo);
+  border-color: var(--destaque);
+}
+
+.item-agenda {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.item-info {
+  display: grid;
+}
+
+.item-info .etiqueta {
+  margin-left: 6px;
+  font-weight: 400;
+}
+
+.item-info small {
+  color: var(--texto-suave);
+}
+
+.item-acoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.item-acoes button {
+  padding: 4px 10px;
+  font-size: 0.8rem;
+}
+
+button.link {
+  padding: 0;
+  background: none;
+  color: var(--destaque);
+  font-size: inherit;
+  text-transform: capitalize;
+}
+
+button.link:hover:not(:disabled) {
+  background: none;
+  text-decoration: underline;
+}
+
+.indicadores {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.indicadores div {
+  padding: 12px 14px;
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+}
+
+.indicadores dt {
+  margin-top: 0;
+}
+
+.indicadores dd {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.confirmacao form {
+  gap: 10px;
+}
+
 .carregando {
   text-align: center;
   color: var(--texto-suave);

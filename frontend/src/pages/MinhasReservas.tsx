@@ -10,6 +10,7 @@ const ROTULO_STATUS: Record<StatusReserva, string> = {
   CANCELADA: 'Cancelada',
   CONCLUIDA: 'Concluída',
   FALTOU: 'Falta registrada',
+  BLOQUEADA: 'Bloqueada',
 }
 
 export default function MinhasReservas() {
