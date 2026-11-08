@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
 import { ApiError, api, mensagemDeErro } from '../../api/client'
+import { localizar } from '../../api/geocodificacao'
 import type { Empresa } from '../../api/tipos'
 import MapaSeletor from '../../components/MapaSeletor'
 
@@ -24,6 +25,7 @@ export default function MinhaEmpresa() {
   const [enviando, setEnviando] = useState(false)
   const [localizando, setLocalizando] = useState(false)
   const [avisoMapa, setAvisoMapa] = useState<string | null>(null)
+  const [centroMapa, setCentroMapa] = useState<{ latitude: number; longitude: number } | null>(null)
 
   useEffect(() => {
     let ignorar = false
@@ -67,20 +69,17 @@ export default function MinhaEmpresa() {
     setAvisoMapa(null)
     setLocalizando(true)
     try {
-      const consulta = new URLSearchParams({
-        format: 'json',
-        limit: '1',
-        countrycodes: 'br',
-        q: `${dados.endereco}, ${dados.cidade}, ${dados.uf}`,
-      })
-      const resposta = await fetch(`https://nominatim.openstreetmap.org/search?${consulta}`)
-      const lugares = (await resposta.json()) as { lat: string; lon: string }[]
-      if (lugares.length === 0) {
-        setAvisoMapa('Endereço não encontrado. Clique no mapa para marcar o local.')
-        return
+      const local = await localizar(dados.endereco, dados.cidade, dados.uf)
+      if (!local) {
+        setAvisoMapa('Não encontramos este endereço. Confira a cidade e a UF, ou clique no mapa para marcar o local.')
+      } else if (local.exato) {
+        marcar(local.latitude, local.longitude)
+        setAvisoMapa('Confira o ponto no mapa. Se estiver errado, clique no local certo.')
+      } else {
+        // só achou o bairro ou a cidade: mostra a região, mas quem marca o ponto é o dono
+        setCentroMapa({ latitude: local.latitude, longitude: local.longitude })
+        setAvisoMapa('Não achamos a rua no mapa. Mostramos a região: clique no local exato da empresa.')
       }
-      marcar(Number(Number(lugares[0].lat).toFixed(6)), Number(Number(lugares[0].lon).toFixed(6)))
-      setAvisoMapa('Confira o ponto no mapa. Se estiver errado, clique no local certo.')
     } catch {
       setAvisoMapa('Não foi possível localizar agora. Clique no mapa para marcar o local.')
     } finally {
@@ -156,7 +155,7 @@ export default function MinhaEmpresa() {
         </div>
         <div className="campo-mapa">
           <span>Localização no mapa</span>
-          <MapaSeletor latitude={dados.latitude} longitude={dados.longitude} aoMudar={marcar} />
+          <MapaSeletor latitude={dados.latitude} longitude={dados.longitude} centro={centroMapa} aoMudar={marcar} />
           <button type="button" className="secundario" onClick={localizarEndereco} disabled={localizando}>
             {localizando ? 'Localizando…' : 'Localizar pelo endereço'}
           </button>

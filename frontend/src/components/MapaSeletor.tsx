@@ -7,11 +7,13 @@ const CENTRO_DO_BRASIL: L.LatLngTuple = [-14.2, -51.9]
 interface Props {
   latitude: number | null
   longitude: number | null
+  /** Região a mostrar sem marcar ponto. */
+  centro?: { latitude: number; longitude: number } | null
   aoMudar: (latitude: number, longitude: number) => void
 }
 
 /** O dono clica no mapa para marcar a posição da empresa. */
-export default function MapaSeletor({ latitude, longitude, aoMudar }: Props) {
+export default function MapaSeletor({ latitude, longitude, centro, aoMudar }: Props) {
   const elemento = useRef<HTMLDivElement>(null)
   const mapa = useRef<L.Map | null>(null)
   const marcador = useRef<L.CircleMarker | null>(null)
@@ -49,6 +51,10 @@ export default function MapaSeletor({ latitude, longitude, aoMudar }: Props) {
     }
     if (!mapa.current.getBounds().contains(posicao)) mapa.current.setView(posicao, 16)
   }, [latitude, longitude])
+
+  useEffect(() => {
+    if (mapa.current && centro) mapa.current.setView([centro.latitude, centro.longitude], 14)
+  }, [centro])
 
   return <div ref={elemento} className="mapa" />
 }
