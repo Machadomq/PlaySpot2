@@ -330,6 +330,193 @@ h2 {
   font-size: 0.85rem;
 }
 
+.faixa {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+  align-items: end;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.faixa button,
+.acoes-dia button {
+  padding: 8px 10px;
+  font-size: 0.85rem;
+}
+
+.acoes-dia {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+fieldset .vazio {
+  margin: 0 0 8px;
+}
+
+.horarios {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
+}
+
+.horarios li {
+  display: grid;
+  gap: 2px;
+  padding: 10px 12px;
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.horarios .indisponivel {
+  color: var(--texto-suave);
+  background: var(--fundo);
+}
+
+@media (max-width: 520px) {
+  .faixa {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.mapa {
+  height: 280px;
+  margin-top: 16px;
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  /* mantém os controles do mapa abaixo de outros elementos da página */
+  isolation: isolate;
+}
+
+.campo-mapa {
+  display: grid;
+  gap: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.campo-mapa .mapa {
+  margin-top: 0;
+}
+
+.campo-mapa small {
+  color: var(--texto-suave);
+  font-weight: 400;
+}
+
+button.alinhado {
+  align-self: end;
+  white-space: nowrap;
+}
+
+.resultado-vazio {
+  margin: 20px 0 0;
+}
+
+.preco {
+  display: grid;
+  justify-items: end;
+  text-align: right;
+  font-size: 0.85rem;
+}
+
+.acoes-reserva {
+  display: grid;
+  justify-items: end;
+  gap: 6px;
+}
+
+.acoes-reserva button {
+  padding: 5px 10px;
+  font-size: 0.85rem;
+}
+
+.campo-data {
+  margin-bottom: 8px;
+}
+
+button.horario {
+  display: grid;
+  width: 100%;
+  gap: 2px;
+  padding: 10px 12px;
+  border: 1px solid var(--borda);
+  background: transparent;
+  color: var(--texto);
+  font-size: 0.9rem;
+  font-weight: 400;
+  text-align: left;
+}
+
+button.horario:hover:not(:disabled) {
+  background: var(--fundo);
+  border-color: var(--destaque);
+}
+
+button.horario.selecionado,
+button.horario.selecionado:hover:not(:disabled) {
+  background: var(--destaque);
+  color: #fff;
+}
+
+button.horario:disabled {
+  background: var(--fundo);
+  color: var(--texto-suave);
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+.horarios li:has(button.horario) {
+  padding: 0;
+  border: 0;
+}
+
+.confirmacao {
+  position: sticky;
+  bottom: 12px;
+  display: grid;
+  gap: 8px;
+  margin-top: 20px;
+  padding: 14px 16px;
+  background: var(--cartao);
+  border: 1px solid var(--destaque);
+  border-radius: 10px;
+}
+
+.confirmacao p {
+  margin: 0;
+}
+
+.confirmacao small {
+  color: var(--texto-suave);
+}
+
+.erro.central {
+  width: calc(100% - 32px);
+  max-width: 420px;
+  margin: 32px auto;
+}
+
+@media (max-width: 520px) {
+  .linha {
+    flex-wrap: wrap;
+  }
+
+  .lista li {
+    flex-wrap: wrap;
+  }
+
+  .preco {
+    width: 100%;
+    justify-items: start;
+    text-align: left;
+  }
+}
+
 .carregando {
   text-align: center;
   color: var(--texto-suave);

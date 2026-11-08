@@ -9,5 +9,7 @@ public interface QuadraRepository extends JpaRepository<Quadra, Long> {
 
     List<Quadra> findByEmpresaIdOrderByNomeAsc(Long empresaId);
 
+    List<Quadra> findByEmpresaIdAndAtivaTrueOrderByNomeAsc(Long empresaId);
+
     Optional<Quadra> findByIdAndEmpresaId(Long id, Long empresaId);
 }

@@ -11,17 +11,17 @@ export default function Layout() {
           PlaySpot
         </Link>
         <nav>
+          {usuario?.papel !== 'DONO' && <NavLink to="/buscar">Buscar</NavLink>}
+          {usuario?.papel === 'JOGADOR' && <NavLink to="/reservas">Reservas</NavLink>}
+          {usuario?.papel === 'DONO' && (
+            <>
+              <NavLink to="/dono/empresa">Empresa</NavLink>
+              <NavLink to="/dono/quadras">Quadras</NavLink>
+            </>
+          )}
           {usuario ? (
             <>
-              {usuario.papel === 'DONO' && (
-                <>
-                  <NavLink to="/dono/empresa">Empresa</NavLink>
-                  <NavLink to="/dono/quadras">Quadras</NavLink>
-                </>
-              )}
-              <NavLink to="/" end>
-                Conta
-              </NavLink>
+              <NavLink to="/conta">Conta</NavLink>
               <button type="button" className="secundario" onClick={sair}>
                 Sair
               </button>

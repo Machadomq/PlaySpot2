@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
 import type { FormEvent } from 'react'
 import { ApiError, api, mensagemDeErro } from '../../api/client'
+import { localizar } from '../../api/geocodificacao'
 import type { Empresa } from '../../api/tipos'
+import MapaSeletor from '../../components/MapaSeletor'
 
 const VAZIA = {
   nome: '',
@@ -11,6 +13,8 @@ const VAZIA = {
   cidade: '',
   uf: '',
   prazoCancelamentoHoras: 24,
+  latitude: null as number | null,
+  longitude: null as number | null,
 }
 
 export default function MinhaEmpresa() {
@@ -19,6 +23,9 @@ export default function MinhaEmpresa() {
   const [erro, setErro] = useState<string | null>(null)
   const [salva, setSalva] = useState(false)
   const [enviando, setEnviando] = useState(false)
+  const [localizando, setLocalizando] = useState(false)
+  const [avisoMapa, setAvisoMapa] = useState<string | null>(null)
+  const [centroMapa, setCentroMapa] = useState<{ latitude: number; longitude: number } | null>(null)
 
   useEffect(() => {
     let ignorar = false
@@ -48,10 +55,46 @@ export default function MinhaEmpresa() {
     setSalva(false)
   }
 
+  function marcar(latitude: number, longitude: number) {
+    setDados((atual) => ({ ...atual, latitude, longitude }))
+    setSalva(false)
+    setAvisoMapa(null)
+  }
+
+  async function localizarEndereco() {
+    if (!dados.endereco.trim() || !dados.cidade.trim()) {
+      setAvisoMapa('Preencha o endereço e a cidade primeiro.')
+      return
+    }
+    setAvisoMapa(null)
+    setLocalizando(true)
+    try {
+      const local = await localizar(dados.endereco, dados.cidade, dados.uf)
+      if (!local) {
+        setAvisoMapa('Não encontramos este endereço. Confira a cidade e a UF, ou clique no mapa para marcar o local.')
+      } else if (local.exato) {
+        marcar(local.latitude, local.longitude)
+        setAvisoMapa('Confira o ponto no mapa. Se estiver errado, clique no local certo.')
+      } else {
+        // só achou o bairro ou a cidade: mostra a região, mas quem marca o ponto é o dono
+        setCentroMapa({ latitude: local.latitude, longitude: local.longitude })
+        setAvisoMapa('Não achamos a rua no mapa. Mostramos a região: clique no local exato da empresa.')
+      }
+    } catch {
+      setAvisoMapa('Não foi possível localizar agora. Clique no mapa para marcar o local.')
+    } finally {
+      setLocalizando(false)
+    }
+  }
+
   async function aoEnviar(evento: FormEvent) {
     evento.preventDefault()
     setErro(null)
     setSalva(false)
+    if (dados.latitude === null) {
+      setErro('Marque a localização da empresa no mapa.')
+      return
+    }
     setEnviando(true)
     try {
       await api<Empresa>('/api/dono/empresa', {
@@ -109,6 +152,14 @@ export default function MinhaEmpresa() {
               required
             />
           </label>
+        </div>
+        <div className="campo-mapa">
+          <span>Localização no mapa</span>
+          <MapaSeletor latitude={dados.latitude} longitude={dados.longitude} centro={centroMapa} aoMudar={marcar} />
+          <button type="button" className="secundario" onClick={localizarEndereco} disabled={localizando}>
+            {localizando ? 'Localizando…' : 'Localizar pelo endereço'}
+          </button>
+          {avisoMapa && <small>{avisoMapa}</small>}
         </div>
         <label>
           Telefone (opcional)

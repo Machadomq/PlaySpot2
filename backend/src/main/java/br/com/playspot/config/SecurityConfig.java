@@ -30,8 +30,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/auth/cadastro", "/api/auth/login").permitAll()
                         // rota interna do Spring para montar respostas de erro (409, 400...); sem isso viram 401
                         .requestMatchers("/error").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/esportes", "/api/fotos/*").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/esportes", "/api/fotos/*", "/api/quadras/*/horarios",
+                                "/api/busca", "/api/empresas/*").permitAll()
                         .requestMatchers("/api/dono/**").hasRole("DONO")
+                        .requestMatchers("/api/reservas/**").hasRole("JOGADOR")
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(o -> o.jwt(j -> j.jwtAuthenticationConverter(conversorDePapeis())));
         return http.build();

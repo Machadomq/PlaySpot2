@@ -1,17 +1,20 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import { Link, Navigate } from 'react-router-dom'
+import { Link, Navigate, useLocation } from 'react-router-dom'
 import { ApiError } from '../api/client'
 import { useAuth } from '../auth/AuthContext'
 
 export default function Login() {
   const { usuario, entrar } = useAuth()
+  const local = useLocation()
+  // volta para a página de onde o jogador veio, por exemplo a de uma quadra que ele ia reservar
+  const destino = (local.state as { de?: string } | null)?.de ?? '/'
   const [email, setEmail] = useState('')
   const [senha, setSenha] = useState('')
   const [erro, setErro] = useState<string | null>(null)
   const [enviando, setEnviando] = useState(false)
 
-  if (usuario) return <Navigate to="/" replace />
+  if (usuario) return <Navigate to={destino} replace />
 
   async function aoEnviar(evento: FormEvent) {
     evento.preventDefault()
@@ -56,7 +59,7 @@ export default function Login() {
         </button>
       </form>
       <p className="rodape">
-        Ainda não tem conta? <Link to="/cadastro">Cadastre-se</Link>
+        Ainda não tem conta? <Link to="/cadastro" state={{ de: destino }}>Cadastre-se</Link>
       </p>
     </main>
   )
