@@ -5,5 +5,6 @@ public enum StatusReserva {
     CONFIRMADA,
     CANCELADA,
     CONCLUIDA,
-    FALTOU
+    FALTOU,
+    BLOQUEADA
 }

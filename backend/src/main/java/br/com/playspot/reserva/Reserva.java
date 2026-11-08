@@ -61,8 +61,42 @@ public class Reserva {
         return reserva;
     }
 
+    /** Reserva lançada pelo dono para um cliente sem conta (telefone, WhatsApp, balcão). */
+    public static Reserva manual(Long quadraId, String clienteNome, Instant inicio, Instant fim, BigDecimal preco) {
+        Reserva reserva = new Reserva();
+        reserva.quadraId = quadraId;
+        reserva.clienteNome = clienteNome;
+        reserva.inicio = inicio;
+        reserva.fim = fim;
+        reserva.precoTotal = preco;
+        reserva.status = StatusReserva.CONFIRMADA;
+        return reserva;
+    }
+
+    public static Reserva bloqueio(Long quadraId, String motivo, Instant inicio, Instant fim) {
+        Reserva reserva = manual(quadraId, motivo, inicio, fim, BigDecimal.ZERO);
+        reserva.status = StatusReserva.BLOQUEADA;
+        return reserva;
+    }
+
     public void cancelar() {
         this.status = StatusReserva.CANCELADA;
+    }
+
+    public void marcarFalta() {
+        this.status = StatusReserva.FALTOU;
+    }
+
+    public void desfazerFalta() {
+        this.status = StatusReserva.CONFIRMADA;
+    }
+
+    public Long getUsuarioId() {
+        return usuarioId;
+    }
+
+    public String getClienteNome() {
+        return clienteNome;
     }
 
     public Long getId() {

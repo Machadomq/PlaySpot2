@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -31,12 +32,15 @@ public class ReservaService {
     private final QuadraRepository quadras;
     private final EmpresaRepository empresas;
     private final HorarioService horarioService;
+    private final PagamentoRepository pagamentos;
 
     public ReservaService(
             ReservaRepository reservas,
             QuadraRepository quadras,
             EmpresaRepository empresas,
-            HorarioService horarioService) {
+            HorarioService horarioService,
+            PagamentoRepository pagamentos) {
+        this.pagamentos = pagamentos;
         this.reservas = reservas;
         this.quadras = quadras;
         this.empresas = empresas;
@@ -63,7 +67,7 @@ public class ReservaService {
         try {
             Reserva reserva = reservas.saveAndFlush(
                     Reserva.doJogador(usuarioId, quadra.getId(), horario.inicio(), horario.fim(), horario.preco()));
-            return resposta(reserva, quadra, empresa);
+            return resposta(reserva, quadra, empresa, false);
         } catch (DataIntegrityViolationException e) {
             throw new RegraDeNegocioException(HORARIO_INDISPONIVEL);
         }
@@ -78,9 +82,13 @@ public class ReservaService {
                 .findAllById(quadrasPorId.values().stream().map(Quadra::getEmpresaId).toList())
                 .stream().collect(Collectors.toMap(Empresa::getId, Function.identity()));
 
+        Set<Long> pagas = pagamentos
+                .findByReservaIdInAndStatus(lista.stream().map(Reserva::getId).toList(), StatusPagamento.PAGO)
+                .stream().map(Pagamento::getReservaId).collect(Collectors.toSet());
+
         return lista.stream().map(reserva -> {
             Quadra quadra = quadrasPorId.get(reserva.getQuadraId());
-            return resposta(reserva, quadra, empresasPorId.get(quadra.getEmpresaId()));
+            return resposta(reserva, quadra, empresasPorId.get(quadra.getEmpresaId()), pagas.contains(reserva.getId()));
         }).toList();
     }
 
@@ -88,6 +96,9 @@ public class ReservaService {
     public ReservaResponse cancelar(Long usuarioId, Long reservaId) {
         Reserva reserva = reservas.findByIdAndUsuarioId(reservaId, usuarioId)
                 .orElseThrow(() -> new NaoEncontradoException("Reserva não encontrada."));
+        if (pagamentos.findFirstByReservaIdAndStatus(reservaId, StatusPagamento.PAGO).isPresent()) {
+            throw new RegraDeNegocioException("Esta reserva já foi paga. Fale com o local para cancelar.");
+        }
         Quadra quadra = quadras.findById(reserva.getQuadraId()).orElseThrow();
         Empresa empresa = empresas.findById(quadra.getEmpresaId()).orElseThrow();
 
@@ -98,14 +109,14 @@ public class ReservaService {
             throw new RegraDeNegocioException("O prazo para cancelar passou. Fale com o local.");
         }
         reserva.cancelar();
-        return resposta(reserva, quadra, empresa);
+        return resposta(reserva, quadra, empresa, false);
     }
 
     private Instant limiteDeCancelamento(Reserva reserva, Empresa empresa) {
         return reserva.getInicio().minus(Duration.ofHours(empresa.getPrazoCancelamentoHoras()));
     }
 
-    private ReservaResponse resposta(Reserva reserva, Quadra quadra, Empresa empresa) {
+    private ReservaResponse resposta(Reserva reserva, Quadra quadra, Empresa empresa, boolean paga) {
         Instant limite = limiteDeCancelamento(reserva, empresa);
         return new ReservaResponse(
                 reserva.getId(),
@@ -120,6 +131,6 @@ public class ReservaService {
                 reserva.getPrecoTotal(),
                 reserva.getStatus(),
                 limite,
-                reserva.getStatus() == StatusReserva.CONFIRMADA && !Instant.now().isAfter(limite));
+                reserva.getStatus() == StatusReserva.CONFIRMADA && !paga && !Instant.now().isAfter(limite));
     }
 }

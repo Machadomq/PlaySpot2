@@ -98,7 +98,36 @@ export interface EmpresaPublica {
   quadras: Quadra[]
 }
 
-export type StatusReserva = 'PENDENTE' | 'CONFIRMADA' | 'CANCELADA' | 'CONCLUIDA' | 'FALTOU'
+export type StatusReserva = 'PENDENTE' | 'CONFIRMADA' | 'CANCELADA' | 'CONCLUIDA' | 'FALTOU' | 'BLOQUEADA'
+
+export type MetodoPagamento = 'PIX' | 'CARTAO' | 'DINHEIRO'
+
+export interface AgendaItem {
+  id: number
+  quadraId: number
+  quadraNome: string
+  inicio: string
+  fim: string
+  data: string
+  horaInicio: string
+  horaFim: string
+  cliente: string
+  telefone: string | null
+  peloApp: boolean
+  preco: number
+  status: StatusReserva
+  metodoPago: MetodoPagamento | null
+}
+
+export interface ResumoFinanceiro {
+  recebido: number
+  recebidoPorMetodo: Partial<Record<MetodoPagamento, number>>
+  aReceber: number
+  perdidoEmFaltas: number
+  reservas: number
+  faltas: number
+  canceladas: number
+}
 
 export interface Reserva {
   id: number

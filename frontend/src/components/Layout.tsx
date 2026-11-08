@@ -15,8 +15,10 @@ export default function Layout() {
           {usuario?.papel === 'JOGADOR' && <NavLink to="/reservas">Reservas</NavLink>}
           {usuario?.papel === 'DONO' && (
             <>
-              <NavLink to="/dono/empresa">Empresa</NavLink>
+              <NavLink to="/dono/agenda">Agenda</NavLink>
               <NavLink to="/dono/quadras">Quadras</NavLink>
+              <NavLink to="/dono/financeiro">Financeiro</NavLink>
+              <NavLink to="/dono/empresa">Empresa</NavLink>
             </>
           )}
           {usuario ? (
