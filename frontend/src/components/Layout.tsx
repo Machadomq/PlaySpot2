@@ -14,6 +14,7 @@ import {
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import type { Papel } from '../api/tipos'
 import { useAuth } from '../auth/AuthContext'
+import Logo from './Logo'
 
 interface Destino {
   para: string
@@ -55,7 +56,7 @@ export default function Layout() {
       </a>
       <header className="topo">
         <Link to="/" className="marca">
-          PlaySpot
+          <Logo />
         </Link>
         <nav className="menu" aria-label="Principal">
           {links}

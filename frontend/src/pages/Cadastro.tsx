@@ -4,6 +4,7 @@ import { Link, Navigate, useLocation } from 'react-router-dom'
 import { ApiError } from '../api/client'
 import type { DadosCadastro } from '../api/tipos'
 import { useAuth } from '../auth/AuthContext'
+import Logo from '../components/Logo'
 
 export default function Cadastro() {
   const { usuario, cadastrar } = useAuth()
@@ -40,6 +41,7 @@ export default function Cadastro() {
   return (
     <div className="auth">
     <aside className="auth-arte">
+      <Logo />
       <p>Reserve quadras ou anuncie as suas.</p>
     </aside>
     <main className="cartao">

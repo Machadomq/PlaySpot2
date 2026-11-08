@@ -1479,3 +1479,39 @@ button.horario.selecionado:hover:not(:disabled) {
 button.horario:not(.selecionado, :disabled) {
   border-color: var(--contorno);
 }
+
+/* Logo */
+
+.logo {
+  display: inline-block;
+  font-family: var(--titulos);
+  font-size: 1.55rem;
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* a cabeça do pino ocupa o lugar do "o" e a ponta desce abaixo da linha do texto */
+.logo-pino {
+  display: inline-block;
+  width: 0.63em;
+  height: 0.7875em;
+  margin: 0 0.06em 0 0.055em;
+  vertical-align: -0.17em;
+  transition: transform 0.2s ease;
+}
+
+.marca:hover .logo-pino {
+  transform: translateY(-2px);
+}
+
+.auth-arte {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.auth-arte .logo {
+  font-size: 2.6rem;
+}
