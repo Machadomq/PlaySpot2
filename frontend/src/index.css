@@ -11,8 +11,11 @@
   --sobre-primaria: #ffffff;
   --faixa: #12284c;
   --sobre-faixa: #ffffff;
-  --selecao: #12284c;
-  --sobre-selecao: #ffffff;
+  --selecao: #d6f24a;
+  --sobre-selecao: #12284c;
+  --botao: #d6f24a;
+  --botao-hover: #c6e436;
+  --sobre-botao: #12284c;
   --erro: #b3261e;
   --erro-fundo: #fdeeec;
   --raio: 12px;
@@ -37,8 +40,6 @@
     --primaria: #a9c4ee;
     --sobre-primaria: #0b1424;
     --faixa: #16284a;
-    --selecao: #dbe6f7;
-    --sobre-selecao: #0b1424;
     --erro: #fca5a5;
     --erro-fundo: #3f1d1d;
   }
@@ -185,10 +186,10 @@ button,
   gap: 8px;
   min-height: 48px;
   padding: 10px 22px;
-  border: 1px solid var(--primaria);
+  border: 1px solid var(--botao);
   border-radius: 8px;
-  background: var(--primaria);
-  color: var(--sobre-primaria);
+  background: var(--botao);
+  color: var(--sobre-botao);
   font: inherit;
   font-weight: 700;
   text-decoration: none;
@@ -209,15 +210,6 @@ button.secundario {
 
 button.secundario:hover:not(:disabled) {
   background: var(--suave);
-}
-
-button.destaque {
-  border-color: var(--selecao);
-  width: 100%;
-  min-height: 58px;
-  background: var(--selecao);
-  color: var(--sobre-selecao);
-  font-size: 1.1rem;
 }
 
 button.compacto {
@@ -350,8 +342,8 @@ button.alinhado {
   padding: 12px 14px;
   border: 1px solid var(--contorno);
   border-radius: 12px;
-  background: var(--selecao);
-  color: var(--sobre-selecao);
+  background: var(--suave);
+  color: var(--tinta);
   font-size: 0.95rem;
 }
 
@@ -499,132 +491,12 @@ dd {
   margin: 24px auto 48px;
 }
 
-.heroi {
-  position: relative;
-  padding: 48px 40px 104px;
-  border: 1px solid var(--contorno);
-  border-radius: 12px;
-  background: var(--faixa);
-  color: var(--sobre-faixa);
-  overflow: hidden;
-}
-
 .heroi h1 {
   position: relative;
   margin: 0 0 12px;
   font-size: clamp(2.3rem, 6vw, 3.4rem);
   line-height: 1.05;
   letter-spacing: -0.03em;
-}
-
-.heroi h1 em {
-  font-style: normal;
-  color: var(--selecao);
-}
-
-.heroi p {
-  position: relative;
-  max-width: 520px;
-  margin: 0;
-  color: rgb(255 255 255 / 0.82);
-  font-size: 1.1rem;
-}
-
-.busca {
-  position: relative;
-  width: calc(100% - 40px);
-  max-width: 780px;
-  margin: -78px auto 0;
-  padding: 24px;
-  border: 1px solid var(--contorno);
-  border-radius: 12px;
-  background: var(--cartao);
-}
-
-.chips {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  padding: 0;
-  border: 0;
-}
-
-.chips legend {
-  margin-bottom: 8px;
-  padding: 0;
-}
-
-button.chip {
-  border-color: var(--contorno);
-  min-height: 44px;
-  padding: 6px 15px;
-  background: var(--cartao);
-  color: var(--tinta);
-  font-weight: 600;
-}
-
-button.chip[aria-pressed='true'] {
-  border-color: var(--selecao);
-  background: var(--selecao);
-  color: var(--sobre-selecao);
-}
-
-.busca-campos {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: end;
-  gap: 12px;
-}
-
-.busca-cidade {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: end;
-  gap: 12px;
-}
-
-.ou {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: var(--tinta-2);
-  font-size: 0.9rem;
-}
-
-.ou::before,
-.ou::after {
-  content: '';
-  flex: 1;
-  border-top: 1px dashed var(--contorno-suave);
-}
-
-.passos {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  max-width: 780px;
-  margin: 32px auto 0;
-  padding: 0;
-  list-style: none;
-  counter-reset: passo;
-}
-
-.passos li {
-  counter-increment: passo;
-  color: var(--tinta-2);
-}
-
-.passos li::before {
-  content: counter(passo);
-  display: block;
-  margin-bottom: 4px;
-  color: var(--primaria);
-  font-family: var(--titulos);
-  font-weight: 700;
-}
-
-.passos strong {
-  color: var(--tinta);
 }
 
 .estado-vazio {
@@ -637,6 +509,40 @@ button.chip[aria-pressed='true'] {
   font-size: 1.05rem;
   text-align: center;
 }
+
+/* Barra de busca */
+
+.heroi {
+  padding: 32px;
+  border-radius: 12px;
+  background: var(--faixa);
+  color: var(--sobre-faixa);
+}
+
+.busca {
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 12px;
+}
+
+.busca-acoes {
+  display: flex;
+  gap: 8px;
+}
+
+button.botao-icone {
+  width: 48px;
+  padding: 0;
+  border-color: transparent;
+}
+
+.resultados h3 {
+  margin: 0 0 2px;
+  font-family: var(--titulos);
+  font-size: 1.1rem;
+  line-height: 1.2;
+}
+
 
 .resultados {
   display: grid;
@@ -721,12 +627,6 @@ button.chip[aria-pressed='true'] {
 .card-local-preco strong {
   font-family: var(--titulos);
   font-size: 1.3rem;
-}
-
-.selo-livres {
-  color: var(--tinta-2);
-  font-size: 0.8rem;
-  font-weight: 700;
 }
 
 /* Mapa */
@@ -952,8 +852,8 @@ button.horario:disabled {
   padding: 18px 20px;
   border: 1px solid var(--contorno);
   border-radius: var(--raio);
-  background: var(--selecao);
-  color: var(--sobre-selecao);
+  background: var(--faixa);
+  color: var(--sobre-faixa);
 }
 
 .confirmacao p {
@@ -971,13 +871,13 @@ button.horario:disabled {
 }
 
 .confirmacao input[type='radio'] {
-  accent-color: var(--sobre-selecao);
+  accent-color: var(--botao);
 }
 
 .confirmacao button:not(.secundario) {
-  background: var(--sobre-selecao);
-  color: var(--selecao);
-  border-color: var(--sobre-selecao);
+  background: var(--botao);
+  color: var(--sobre-botao);
+  border-color: var(--botao);
 }
 
 .confirmacao button.secundario:hover:not(:disabled) {
@@ -986,8 +886,8 @@ button.horario:disabled {
 
 .confirmacao button.secundario {
   background: transparent;
-  color: var(--sobre-selecao);
-  border-color: var(--sobre-selecao);
+  color: var(--sobre-faixa);
+  border-color: var(--sobre-faixa);
 }
 
 .confirmacao .erro {
@@ -1022,9 +922,9 @@ button.horario:disabled {
   flex-shrink: 0;
   width: 92px;
   padding: 12px 6px;
-  border-right: 1px dashed var(--sobre-selecao);
-  background: var(--selecao);
-  color: var(--sobre-selecao);
+  border-right: 1px dashed var(--contorno);
+  background: var(--faixa);
+  color: var(--sobre-faixa);
   line-height: 1.1;
 }
 
@@ -1325,19 +1225,6 @@ button.horario-vago:hover:not(:disabled) {
     bottom: 86px;
   }
 
-  .heroi {
-    padding: 36px 22px 100px;
-  }
-
-  .busca {
-    width: calc(100% - 16px);
-    padding: 18px;
-  }
-
-  .passos {
-    grid-template-columns: 1fr;
-  }
-
   .card-local {
     grid-template-columns: 84px minmax(0, 1fr);
   }
@@ -1353,10 +1240,6 @@ button.horario-vago:hover:not(:disabled) {
     display: flex;
     align-items: baseline;
     gap: 8px;
-  }
-
-  .card-local-preco .selo-livres {
-    margin-left: auto;
   }
 
   .cartao {
@@ -1401,9 +1284,37 @@ button.horario-vago:hover:not(:disabled) {
   }
 }
 
+@media (max-width: 860px) {
+  .heroi {
+    padding: 22px 18px;
+  }
+
+  .busca {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .busca-cidade,
+  .busca-acoes {
+    grid-column: 1 / -1;
+  }
+
+  .busca-acoes button[type='submit'] {
+    flex: 1;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation: none !important;
     transition: none !important;
   }
+}
+
+.heroi input,
+.heroi select {
+  color: var(--tinta);
+}
+
+button.horario:not(.selecionado, :disabled) {
+  border-color: var(--contorno);
 }
